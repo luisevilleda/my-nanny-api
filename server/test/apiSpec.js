@@ -562,4 +562,86 @@ describe('My-Nanny API', () => {
     });
   });
 
+  it('Should update a chore with a PUT.', (done) => {
+    // Post the user to /signup.
+    request({
+      method: 'PUT',
+      uri: 'http://127.0.0.1:1337/api/chores',
+      json: {
+        account: {
+          amazonId: '9999',
+        },
+        child: {
+          id: 1,
+        },
+        chores: [
+          {
+            id: 1,
+            title: 'Feed the dog',
+            details: 'Dont\'t leave the food can open.',
+            date: '2016-11-14',
+          },
+        ],
+      },
+    }, () => {
+      // Now if we look in the database, we should find the
+      // that Little-John has a schedule with childId that matched his id
+      const queryString = 'SELECT * FROM chores LEFT JOIN children ON chores.childId = children.id LEFT JOIN accounts ON children.accountId = accounts.id WHERE accounts.amazonId = 9999';
+      // const queryString = 'SELECT * FROM chores';
+      const queryArgs = [];
+
+      dbConnection.query(queryString, queryArgs, (err, results) => {
+        // Should have one result:
+        // console.log('QUERY RESULTS', results);
+        expect(results.length).to.equal(2);
+        expect(results[0].childId).to.equal(1);
+        expect(results[0].title).to.equal('Feed the dog');
+
+        done();
+      });
+    });
+  });
+
+  it('Should not update a chore if the account does not exist.', (done) => {
+    // Post the user to /signup.
+    request({
+      method: 'PUT',
+      uri: 'http://127.0.0.1:1337/api/chores',
+      json: {
+        account: {
+          amazonId: '9999',
+        },
+        child: {
+          id: 8973459873459,
+        },
+        chores: [
+          {
+            id: 1,
+            title: 'Cook dinner',
+            details: 'The lasagne is in the freezer.',
+            date: '2016-11-15',
+          },
+        ],
+      },
+    }, () => {
+      // Now if we look in the database, we should find the
+      // that Little-John has a schedule with childId that matched his id
+      const queryString = 'SELECT * FROM chores LEFT JOIN children ON chores.childId = children.id LEFT JOIN accounts ON children.accountId = accounts.id WHERE accounts.amazonId = 9999';
+      // const queryString = 'SELECT * FROM chores';
+      const queryArgs = [];
+
+      dbConnection.query(queryString, queryArgs, (err, results) => {
+        // Should have one result:
+        // console.log('QUERY RESULTS', results);
+        expect(results.length).to.equal(2);
+        expect(results[0].childId).to.equal(1);
+        expect(results[0].title).to.equal('Feed the dog');
+        expect(results[1].title).to.equal('Mop the floor');
+
+
+        done();
+      });
+    });
+  });
+
 });

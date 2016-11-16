@@ -78,6 +78,39 @@ const childrenServices = {
       });
   }),
 
+  /**
+    * @function updateChild
+    * @param {object} data - Contains an account
+    * @param {object} data.account - Contains amazonId
+    * @param {string} data.account.amazonId
+    * @param {object} data.child - MUST contains ORIGINAL child name
+    * @param {string} data.child.name - MUST be ORIGINAL child name
+    * @param {string} data.updatedChild.name - Child's updated name
+    * @param {string} data.updatedChild.phone - Child's updated name
+    * @returns {promise}
+  */
+  deleteChild: data =>
+  new Promise((resolve, reject) => {
+    accountRepository.findAccountByAmazonId(data.account.amazonId)
+      .then((account) => {
+        if (!account) {
+          reject('Cannot delete child, account does not exist.');
+        } else {
+          childrenRepository.findOneByIdAmazonId(data.child, data.account.amazonId)
+          .then((child) => {
+            console.log(child);
+            if (!child) {
+              reject('Cannot delete child, child does not exist.');
+            } else {
+              childrenRepository.destroy(child)
+              .then(status => resolve(status))
+              .catch(err => reject(err));
+            }
+          });
+        }
+      });
+  }),
+
 };
 
 export default childrenServices;

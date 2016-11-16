@@ -60,7 +60,34 @@ const choresServices = {
 
   update: data =>
     new Promise((resolve, reject) => {
-
+      accountRepository.findAccountByAmazonId(data.account.amazonId)
+      .then((account) => {
+        if (!account) {
+          reject('Cannot update chore, account does not exist.');
+        } else {
+          // Find the account's child (by name) that the chore is for
+          childrenRepository.findOneByIdAmazonId(data.child, data.account.amazonId)
+          .then((child) => {
+            if (!child) {
+              reject('Cannot update chores, child does not exist.');
+            } else {
+              // Get all of the chores for the child model
+              choresRepository.getChoresForChildById(child)
+              .then((existingChores) => {
+                const updatedChores = data.chores;
+                existingChores.forEach((existingChore) => {
+                  updatedChores.forEach((updatedChore) => {
+                    if (existingChore.id === updatedChore.id) {
+                      existingChore.update(updatedChore);
+                    }
+                  });
+                });
+                resolve('Successfully updated chores');
+              });
+            }
+          });
+        }
+      });
     }),
 
 };

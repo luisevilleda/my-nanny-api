@@ -37,6 +37,22 @@ const choresRepository = {
 
   save: chore => chore.save(),
 
+  getChoresForChildById: ({ id }) =>
+    new Promise((resolve, reject) => {
+      Chore.findAll({
+        where: {
+          childId: id,
+        },
+      })
+      .then((chores) => {
+        if (!chores.length) {
+          reject('No chores found for this childId.');
+        } else {
+          resolve(chores);
+        }
+      })
+      .catch(err => console.log(err));
+    }),
 
 };
 
