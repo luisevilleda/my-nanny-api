@@ -124,13 +124,11 @@ const routes = (app) => {
   * @apiParamExample PUT format:
   *     {
   *       "account": {
-  *         "amazonId": "999888777666"
-  *       },
-  *       "updatedAccount": {
-  *         "username": "Mary",
+  *         "amazonId": "999888777666",
+  *         "username": "George",
   *         "timeZone": "EST",
   *         "phone": "9990009999",
-  *         "email": "mary@anotherExample.com"
+  *         "email": "george@anotherExample.com"
   *       }
   *     }
   *
