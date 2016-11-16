@@ -348,10 +348,26 @@ const routes = (app) => {
   app.put('/api/chores', ChoresController.update);
 
   /**
-  * @api {post} /api/chores Add Chore to a Child
+  * @api {delete} /api/chores Destroy a child's chore(s)
   * @apiGroup Chores
+  *
+  * @apiParamExample DELETE format:
+  *     {
+  *       "account": {
+  *         "amazonId": "999888777666"
+  *       },
+  *       "child": {
+  *         "id": 1
+  *       },
+  *       "chores": [
+  *         {
+  *           "id": 1
+  *         }
+  *        ]
+  *     }
+  *
   */
-  app.delete('/api/chores/:id', ChoresController.destroy);
+  app.delete('/api/chores', ChoresController.destroy);
 
 
   /* /////// Schedule /////// */
@@ -401,7 +417,7 @@ const routes = (app) => {
   * @api {delete} /api/schedule Delete schedule for a child
   * @apiGroup Schedule
   *
-  * @apiParamExample POST format:
+  * @apiParamExample DELETE format:
   *     {
   *       "account": {
   *         "amazonId": "999888777666"
@@ -410,13 +426,15 @@ const routes = (app) => {
   *         "id": "1"
   *       },
   *       "schedule": {
+  *         "id": 1,
   *         "monday": "08:25",
   *         "tuesday": "02:40",
   *         "wednesday": "08:05",
   *         "thursday": "null",
   *         "friday": "17:00",
   *         "saturday": "09:30",
-  *         "sunday": "21:55"
+  *         "sunday": "21:55",
+  *          "childId": 1
   *       }
   *     }
   *

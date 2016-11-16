@@ -644,4 +644,156 @@ describe('My-Nanny API', () => {
     });
   });
 
+  it('Should delete a chore if it exists.', (done) => {
+    // Post the user to /signup.
+    request({
+      method: 'DELETE',
+      uri: 'http://127.0.0.1:1337/api/chores',
+      json: {
+        account: {
+          amazonId: '9999',
+        },
+        child: {
+          id: 1,
+        },
+        chores: [
+          {
+            id: 1,
+          },
+        ],
+      },
+    }, () => {
+      // Now if we look in the database, we should find the
+      // that Little-John has a schedule with childId that matched his id
+      const queryString = 'SELECT * FROM chores LEFT JOIN children ON chores.childId = children.id LEFT JOIN accounts ON children.accountId = accounts.id WHERE accounts.amazonId = 9999';
+      // const queryString = 'SELECT * FROM chores';
+      const queryArgs = [];
+
+      dbConnection.query(queryString, queryArgs, (err, results) => {
+        // Should have one result:
+        // console.log('QUERY RESULTS', results);
+        expect(results.length).to.equal(1);
+        expect(results[0].childId).to.equal(1);
+        expect(results[0].title).to.equal('Mop the floor');
+
+
+        done();
+      });
+    });
+  });
+
+  it('Should not delete a chore if it does not exist.', (done) => {
+    // Post the user to /signup.
+    request({
+      method: 'DELETE',
+      uri: 'http://127.0.0.1:1337/api/chores',
+      json: {
+        account: {
+          amazonId: '9999',
+        },
+        child: {
+          id: 1,
+        },
+        chores: [
+          {
+            id: 98098,
+          },
+        ],
+      },
+    }, () => {
+      // Now if we look in the database, we should find the
+      // that Little-John has a schedule with childId that matched his id
+      const queryString = 'SELECT * FROM chores LEFT JOIN children ON chores.childId = children.id LEFT JOIN accounts ON children.accountId = accounts.id WHERE accounts.amazonId = 9999';
+      // const queryString = 'SELECT * FROM chores';
+      const queryArgs = [];
+
+      dbConnection.query(queryString, queryArgs, (err, results) => {
+        // Should have one result:
+        // console.log('QUERY RESULTS', results);
+        expect(results.length).to.equal(1);
+        expect(results[0].childId).to.equal(1);
+        expect(results[0].title).to.equal('Mop the floor');
+
+
+        done();
+      });
+    });
+  });
+
+  it('Should not delete a chore if the child does not exist.', (done) => {
+    // Post the user to /signup.
+    request({
+      method: 'DELETE',
+      uri: 'http://127.0.0.1:1337/api/chores',
+      json: {
+        account: {
+          amazonId: '9999',
+        },
+        child: {
+          id: 293847,
+        },
+        chores: [
+          {
+            id: 2,
+          },
+        ],
+      },
+    }, () => {
+      // Now if we look in the database, we should find the
+      // that Little-John has a schedule with childId that matched his id
+      const queryString = 'SELECT * FROM chores LEFT JOIN children ON chores.childId = children.id LEFT JOIN accounts ON children.accountId = accounts.id WHERE accounts.amazonId = 9999';
+      // const queryString = 'SELECT * FROM chores';
+      const queryArgs = [];
+
+      dbConnection.query(queryString, queryArgs, (err, results) => {
+        // Should have one result:
+        // console.log('QUERY RESULTS', results);
+        expect(results.length).to.equal(1);
+        expect(results[0].childId).to.equal(1);
+        expect(results[0].title).to.equal('Mop the floor');
+
+
+        done();
+      });
+    });
+  });
+
+  it('Should not delete a chore if the account does not exist.', (done) => {
+    // Post the user to /signup.
+    request({
+      method: 'DELETE',
+      uri: 'http://127.0.0.1:1337/api/chores',
+      json: {
+        account: {
+          amazonId: '203498572309475',
+        },
+        child: {
+          id: 1,
+        },
+        chores: [
+          {
+            id: 2,
+          },
+        ],
+      },
+    }, () => {
+      // Now if we look in the database, we should find the
+      // that Little-John has a schedule with childId that matched his id
+      const queryString = 'SELECT * FROM chores LEFT JOIN children ON chores.childId = children.id LEFT JOIN accounts ON children.accountId = accounts.id WHERE accounts.amazonId = 9999';
+      // const queryString = 'SELECT * FROM chores';
+      const queryArgs = [];
+
+      dbConnection.query(queryString, queryArgs, (err, results) => {
+        // Should have one result:
+        // console.log('QUERY RESULTS', results);
+        expect(results.length).to.equal(1);
+        expect(results[0].childId).to.equal(1);
+        expect(results[0].title).to.equal('Mop the floor');
+
+
+        done();
+      });
+    });
+  });
+
 });

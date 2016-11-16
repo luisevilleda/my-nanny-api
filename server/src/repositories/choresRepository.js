@@ -33,7 +33,21 @@ const choresRepository = {
     });
   },
 
-  destroy: chore => chore.destroy(),
+  /**
+    * @function destroy
+    * @param {object} chore - Instance of a chore from the db.
+  */
+  destroy: ({ id }) =>
+    new Promise((resolve, reject) => {
+      console.log('DESTROYING CHILD');
+      Chore.destroy({
+        where: {
+          id,
+        },
+      })
+      .on('success', resolve('Successfully destroyed chore.'))
+      .on('error', reject('Failed to destroy chore.'));
+    }),
 
   save: chore => chore.save(),
 

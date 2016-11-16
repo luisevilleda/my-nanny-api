@@ -60,12 +60,13 @@ const choresServices = {
 
   update: data =>
     new Promise((resolve, reject) => {
+      // Check if account exists
       accountRepository.findAccountByAmazonId(data.account.amazonId)
       .then((account) => {
         if (!account) {
           reject('Cannot update chore, account does not exist.');
         } else {
-          // Find the account's child (by name) that the chore is for
+          // Find the account's child by the child's id that the chore is for
           childrenRepository.findOneByIdAmazonId(data.child, data.account.amazonId)
           .then((child) => {
             if (!child) {
@@ -83,6 +84,39 @@ const choresServices = {
                   });
                 });
                 resolve('Successfully updated chores');
+              });
+            }
+          });
+        }
+      });
+    }),
+
+  destroy: data =>
+    new Promise((resolve, reject) => {
+      // Check if account exists
+      accountRepository.findAccountByAmazonId(data.account.amazonId)
+      .then((account) => {
+        if (!account) {
+          reject('Cannot destroy chore, account does not exist.');
+        } else {
+          // Find the account's child by the child's id
+          childrenRepository.findOneByIdAmazonId(data.child, data.account.amazonId)
+          .then((child) => {
+            if (!child) {
+              reject('Cannot destroy chore, child does not exist.');
+            } else {
+              // Get all of the chores for the child model
+              choresRepository.getChoresForChildById(child)
+              .then((chores) => {
+                const choresToDelete = data.chores;
+                chores.forEach((chore) => {
+                  choresToDelete.forEach((choreToDelete) => {
+                    if (chore.id === choreToDelete.id) {
+                      choresRepository.destroy(chore);
+                    }
+                  });
+                });
+                resolve('Successfully destroyed chores.');
               });
             }
           });
