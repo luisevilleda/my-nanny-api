@@ -252,6 +252,27 @@ const routes = (app) => {
   */
   app.put('/api/children', ChildrenController.updateChild);
 
+  /**
+  * @api {put} /api/children Delete a child
+  * @apiGroup Children
+  *
+  * @apiParamExample DELETE format:
+  *     {
+  *       "account": {
+  *         "amazonId": "999888777666"
+  *       },
+  *       "child": {
+  *         "id": 3
+  *       }
+  *     }
+  *
+  * @apiSuccess {String} Successfully updated child.
+  *
+  * @apiError Failed to update child.
+  */
+  app.delete('/api/children', ChildrenController.deleteChild);
+
+
   /* /////// CHORES /////// */
 
   /**
@@ -278,14 +299,16 @@ const routes = (app) => {
   *         "amazonId": "999888777666"
   *       },
   *       "child": {
-  *         "name": "Winston"
+  *         "id": 1
   *       },
   *       "chores": [
-  *         { "title": "Clean your room",
+  *         {
+  *           "title": "Clean your room",
   *           "details": "Please clean your room nice and neat. Vaccuum it too!",
   *           "date": "2016-12-24"
   *         },
-  *         { "title": "Wash the dishes",
+  *         {
+  *           "title": "Wash the dishes",
   *           "details": "Use the blue sponge under the sink.",
   *           "date": "2016-12-24"
   *         }
@@ -299,8 +322,28 @@ const routes = (app) => {
   app.post('/api/chores', ChoresController.create);
 
   /**
-  * @api {post} /api/chores Add Chore to a Child
+  * @api {put} /api/chores Update chore(s) for a child
   * @apiGroup Chores
+  * @apiDescription Expects an array even if you are on;y updating 1 chore
+  *
+  * @apiParamExample PUT format:
+  *     {
+  *       "account": {
+  *         "amazonId": "999888777666"
+  *       },
+  *       "child": {
+  *         "id": 1
+  *       },
+  *       "chores": [
+  *         {
+  *           "id": 1,
+  *           "title": "Feed the dog",
+  *           "details": "Don't leave the food bin open!",
+  *           "date": "2016-12-31"
+  *         }
+  *        ]
+  *     }
+  *
   */
   app.put('/api/chores', ChoresController.update);
 

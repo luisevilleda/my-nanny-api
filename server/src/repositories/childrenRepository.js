@@ -34,7 +34,17 @@ const childrenRepository = {
     * @function destroy
     * @param {object} child - Instance of a child from the db.
   */
-  destroy: child => child.destroy(),
+  destroy: ({ id }) =>
+    new Promise((resolve, reject) => {
+      console.log('DESTORYING CHILD');
+      Child.destroy({
+        where: {
+          id,
+        },
+      })
+      .on('success', resolve('Successfully destoryed child.'))
+      .on('error', reject('Failed to destory child.'));
+    }),
 
   /**
     * @function save

@@ -14,6 +14,12 @@ const ChildrenController = {
     .catch(err => res.status(500).send(err));
   },
 
+  deleteChild: (req, res) => {
+    childrenServices.deleteChild(req.body)
+    .then(status => res.send(status))
+    .catch(err => res.status(500).send(err));
+  },
+
 };
 
 export default ChildrenController;
