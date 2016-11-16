@@ -111,7 +111,7 @@ const choresServices = {
                 const choresToDelete = data.chores;
                 chores.forEach((chore) => {
                   choresToDelete.forEach((choreToDelete) => {
-                    if (chore.id === choreToDelete.id) {
+                    if (Number(chore.id) === Number(choreToDelete.id)) {
                       choresRepository.destroy(chore);
                     }
                   });
