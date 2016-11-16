@@ -357,6 +357,26 @@ const routes = (app) => {
   /**
   * @api {delete} /api/schedule Delete schedule for a child
   * @apiGroup Schedule
+  *
+  * @apiParamExample POST format:
+  *     {
+  *       "account": {
+  *         "amazonId": "999888777666"
+  *       },
+  *       "child": {
+  *         "id": "1"
+  *       },
+  *       "schedule": {
+  *         "monday": "08:25",
+  *         "tuesday": "02:40",
+  *         "wednesday": "08:05",
+  *         "thursday": "null",
+  *         "friday": "17:00",
+  *         "saturday": "09:30",
+  *         "sunday": "21:55"
+  *       }
+  *     }
+  *
   */
   app.delete('/api/schedule', ScheduleController.destroy);
 };
