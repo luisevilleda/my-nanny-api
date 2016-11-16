@@ -77,7 +77,13 @@ const accountServices = {
         if (!account) {
           reject('Cannot update account. Account doesn\'t exist');
         } else {
-          account.updateAttributes(data.updatedAccount);
+          // Strip amazonId from the data.account object
+            // So that they can't update that part of it
+            // This doesn't provide protection without amazon actually
+            // Authenticating who the user is
+          const updatedAccount = data.account;
+          delete updatedAccount.amazonId;
+          account.updateAttributes(data.account);
           resolve('Account updated successfully.');
         }
       });
