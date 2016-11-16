@@ -36,14 +36,14 @@ const childrenRepository = {
   */
   destroy: ({ id }) =>
     new Promise((resolve, reject) => {
-      console.log('DESTORYING CHILD');
+      // console.log('DESTROYING CHILD');
       Child.destroy({
         where: {
           id,
         },
       })
-      .on('success', resolve('Successfully destoryed child.'))
-      .on('error', reject('Failed to destory child.'));
+      .on('success', resolve('Successfully destroyed child.'))
+      .on('error', reject('Failed to destroy child.'));
     }),
 
   /**
