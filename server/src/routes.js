@@ -3,6 +3,7 @@ import UserController from './controllers/UserController';
 import ChildrenController from './controllers/ChildrenController';
 import ScheduleController from './controllers/ScheduleController';
 // import fs from 'fs';
+import config from './config';
 
 const ensureAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -45,7 +46,7 @@ const routes = (app, passport) => {
       UserController.create(pseudoReqBody, req.user.id, res)
       // Whether the account existed before or not
         // It definitely exists now
-      .then(status => res.redirect('/test'));
+      .then(status => res.redirect(config.redirectUrlAfterLogin));
     });
 
   /**

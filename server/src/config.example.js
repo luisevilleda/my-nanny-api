@@ -10,4 +10,7 @@ export default {
   // AMAZON credentials
   amazonClientId: 'FILL_ME_IN',
   amazonClientSecret: 'FILL_ME_IN',
+
+  // Redirect after login
+  redirectUrlAfterLogin: 'http://localhost:3000',
 };
