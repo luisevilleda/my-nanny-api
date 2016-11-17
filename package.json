@@ -35,7 +35,7 @@
     "mysql": "^2.12.0",
     "nodemon": "^1.11.0",
     "passport": "^0.3.2",
-    "passport-amazon": "^1.0.0",
+    "passport-amazon-token": "^2.1.0",
     "request": "^2.78.0",
     "sequelize": "^3.25.0",
     "sinon": "^1.17.6"
