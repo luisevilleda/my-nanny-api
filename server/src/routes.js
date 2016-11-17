@@ -14,7 +14,7 @@ const ensureAuthenticated = (req, res, next) => {
 const routes = (app, passport) => {
   // TEST
   app.get('/test', ensureAuthenticated, (req, res) => {
-    console.log('USER: ', req.user);
+    // console.log('USER: ', req.user);
     res.sendStatus(200);
   });
 
