@@ -6,13 +6,13 @@ const ScheduleController = {
   },
 
   create: (req, res) => {
-    scheduleServices.create(req.body)
+    scheduleServices.create(req.body, req.user.id)
     .then(status => res.send(status))
     .catch(err => res.status(500).send(err));
   },
 
   update: (req, res) => {
-    scheduleServices.update(req.body)
+    scheduleServices.update(req.body, req.user.id)
     .then(status => res.send(status))
     .catch(err => res.status(500).send(err));
   },

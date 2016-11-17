@@ -13,35 +13,42 @@ import db from '../connection';
 
 /** @module Services: Children */
 const schedlueServices = {
-  read: data => null,
+  read: (data, amazonId) => null,
 
   /**
     * @function create
     * @param {object} data - Contains separate account and child objects
     * @param {object} data.account - Contains a account's info
-    * @param {string} data.account.amazonId
+    * @param {string} amazonId
     * @param {object} data.child
     * @param {string} data.child.name
     * @param {object} data.schedule
-    * @param {string} data.schedule.defaultCurfews - Sunday to Saturday [null, "18:30", "14:30", "17:00", "22:00", "17:00", null]
+    * @param {string} data.schedule.sunday
+    * @param {string} data.schedule.monday
+    * @param {string} data.schedule.tuesday
+    * @param {string} data.schedule.wednesday
+    * @param {string} data.schedule.thursday
+    * @param {string} data.schedule.sunday
+    * @param {string} data.schedule.sunday
+    * @param {string} data.schedule.sunday
     * @returns {promise}
   */
-  create: data =>
+  create: (data, amazonId) =>
     new Promise((resolve, reject) => {
       // Check if the account exists
-      accountRepository.findAccountByAmazonId(data.account.amazonId)
+      accountRepository.findAccountByAmazonId(amazonId)
       .then((account) => {
         if (!account) {
           reject('Cannot add schedule, account does not exist.');
         } else {
           // Check if the child exists
-          childrenRepository.findOneByIdAmazonId(data.child, data.account.amazonId)
+          childrenRepository.findOneByIdAmazonId(data.child, amazonId)
           .then((child) => {
             if (!child) {
               reject('Cannot add schedule, child does not exist.');
             } else {
               // Get the schedule and the child
-              scheduleRepository.findScheduleIfExists(data.child, data.account.amazonId)
+              scheduleRepository.findScheduleIfExists(data.child, amazonId)
               .then((schedule) => {
                 if (schedule) {
                   reject('Schedule already exists, please PUT to update a schedule');
@@ -58,21 +65,21 @@ const schedlueServices = {
       });
     }),
 
-  update: data =>
+  update: (data, amazonId) =>
     new Promise((resolve, reject) => {
       // Check if the account exists
-      accountRepository.findAccountByAmazonId(data.account.amazonId)
+      accountRepository.findAccountByAmazonId(amazonId)
       .then((account) => {
         if (!account) {
           reject('Cannot update schedule, account does not exist.');
         } else {
           // Check if the child exists
-          childrenRepository.findOneByIdAmazonId(data.child, data.account.amazonId)
+          childrenRepository.findOneByIdAmazonId(data.child, amazonId)
           .then((child) => {
             if (!child) {
               reject('Cannot update schedule, child does not exist');
             } else {
-              scheduleRepository.findScheduleIfExists(data.child, data.account.amazonId)
+              scheduleRepository.findScheduleIfExists(data.child, amazonId)
               .then((schedule) => {
                 if (!schedule) {
                   reject('Cannot update schedule, schedule does not exist.');
@@ -87,7 +94,7 @@ const schedlueServices = {
       });
     }),
 
-  destroy: data => null,
+  destroy: (data, amazonId) => null,
 
 };
 

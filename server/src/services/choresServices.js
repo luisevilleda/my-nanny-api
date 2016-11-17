@@ -18,7 +18,7 @@ const choresServices = {
     * @function create
     * @param {object} data - Contains separate account and child objects
     * @param {object} data.account - Contains a account's info
-    * @param {string} data.account.amazonId
+    * @param {string} amazonId
     * @param {object} data.child
     * @param {string} data.child.name
     * @param {object} data.chore
@@ -27,15 +27,15 @@ const choresServices = {
     * @param {string} data.chore.date - "2016-12-24"
     * @returns {promise}
   */
-  create: data =>
+  create: (data, amazonId) =>
     new Promise((resolve, reject) => {
-      accountRepository.findAccountByAmazonId(data.account.amazonId)
+      accountRepository.findAccountByAmazonId(amazonId)
       .then((account) => {
         if (!account) {
           reject('Cannot add chore, account does not exist.');
         } else {
           // Find the account's child (by name) that the chore is for
-          childrenRepository.findOneByIdAmazonId(data.child, data.account.amazonId)
+          childrenRepository.findOneByIdAmazonId(data.child, amazonId)
           .then((child) => {
             if (!child) {
               reject('Cannot add chore, child does not exist.');
@@ -58,16 +58,16 @@ const choresServices = {
       });
     }),
 
-  update: data =>
+  update: (data, amazonId) =>
     new Promise((resolve, reject) => {
       // Check if account exists
-      accountRepository.findAccountByAmazonId(data.account.amazonId)
+      accountRepository.findAccountByAmazonId(amazonId)
       .then((account) => {
         if (!account) {
           reject('Cannot update chore, account does not exist.');
         } else {
           // Find the account's child by the child's id that the chore is for
-          childrenRepository.findOneByIdAmazonId(data.child, data.account.amazonId)
+          childrenRepository.findOneByIdAmazonId(data.child, amazonId)
           .then((child) => {
             if (!child) {
               reject('Cannot update chores, child does not exist.');
@@ -91,16 +91,16 @@ const choresServices = {
       });
     }),
 
-  destroy: data =>
+  destroy: (data, amazonId) =>
     new Promise((resolve, reject) => {
       // Check if account exists
-      accountRepository.findAccountByAmazonId(data.account.amazonId)
+      accountRepository.findAccountByAmazonId(amazonId)
       .then((account) => {
         if (!account) {
           reject('Cannot destroy chore, account does not exist.');
         } else {
           // Find the account's child by the child's id
-          childrenRepository.findOneByIdAmazonId(data.child, data.account.amazonId)
+          childrenRepository.findOneByIdAmazonId(data.child, amazonId)
           .then((child) => {
             if (!child) {
               reject('Cannot destroy chore, child does not exist.');

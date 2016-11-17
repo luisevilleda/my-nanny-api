@@ -11,6 +11,7 @@ const expect = chai.expect;
 
 describe('My-Nanny API', () => {
   let dbConnection;
+  const urlBase = 'https://localhost:1337';
 
   before((done) => {
     // Before the whole run of tests
@@ -22,8 +23,8 @@ describe('My-Nanny API', () => {
     dbConnection.connect();
     dbConnection.query('DROP DATABASE IF EXISTS chaitest');
     dbConnection.query('CREATE DATABASE IF NOT EXISTS chaitest');
-    dbConnection.query('USE chaitest');
-    done();
+    dbConnection.query('USE chaitest')
+    .on('success', done());
   });
 
   beforeEach((done) => {
@@ -46,7 +47,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'POST',
-      uri: 'http://127.0.0.1:1337/signup',
+      uri: urlBase + '/signup',
       json: {
         account: {
           token: '1234',
@@ -79,7 +80,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'POST',
-      uri: 'http://127.0.0.1:1337/signup',
+      uri: urlBase + '/signup',
       json: {
         account: {
           token: '1234',
@@ -108,7 +109,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'POST',
-      uri: 'http://127.0.0.1:1337/signup',
+      uri: urlBase + '/signup',
       json: {
         account: {
           token: '111',
@@ -141,7 +142,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'POST',
-      uri: 'http://127.0.0.1:1337/api/children',
+      uri: urlBase + '/api/children',
       json: {
         account: {
           amazonId: '9999',
@@ -171,7 +172,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'POST',
-      uri: 'http://127.0.0.1:1337/api/children',
+      uri: urlBase + '/api/children',
       json: {
         account: {
           amazonId: '8888',
@@ -201,7 +202,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'POST',
-      uri: 'http://127.0.0.1:1337/api/children',
+      uri: urlBase + '/api/children',
       json: {
         account: {
           amazonId: '9999',
@@ -230,7 +231,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'POST',
-      uri: 'http://127.0.0.1:1337/api/chores',
+      uri: urlBase + '/api/chores',
       json: {
         account: {
           amazonId: '9999',
@@ -272,7 +273,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'POST',
-      uri: 'http://127.0.0.1:1337/api/schedule',
+      uri: urlBase + '/api/schedule',
       json: {
         account: {
           amazonId: '9999',
@@ -314,7 +315,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'POST',
-      uri: 'http://127.0.0.1:1337/api/schedule',
+      uri: urlBase + '/api/schedule',
       json: {
         account: {
           amazonId: '92837401923874',
@@ -356,7 +357,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'POST',
-      uri: 'http://127.0.0.1:1337/api/schedule',
+      uri: urlBase + '/api/schedule',
       json: {
         account: {
           amazonId: '9999',
@@ -401,7 +402,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'POST',
-      uri: 'http://127.0.0.1:1337/api/schedule',
+      uri: urlBase + '/api/schedule',
       json: {
         account: {
           amazonId: '9999',
@@ -440,7 +441,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'PUT',
-      uri: 'http://127.0.0.1:1337/api/schedule',
+      uri: urlBase + '/api/schedule',
       json: {
         account: {
           amazonId: '9999',
@@ -482,7 +483,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'PUT',
-      uri: 'http://127.0.0.1:1337/api/schedule',
+      uri: urlBase + '/api/schedule',
       json: {
         account: {
           amazonId: '9999',
@@ -524,7 +525,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'PUT',
-      uri: 'http://127.0.0.1:1337/api/schedule',
+      uri: urlBase + '/api/schedule',
       json: {
         account: {
           amazonId: '012394812039480129834',
@@ -566,7 +567,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'PUT',
-      uri: 'http://127.0.0.1:1337/api/chores',
+      uri: urlBase + '/api/chores',
       json: {
         account: {
           amazonId: '9999',
@@ -606,7 +607,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'PUT',
-      uri: 'http://127.0.0.1:1337/api/chores',
+      uri: urlBase + '/api/chores',
       json: {
         account: {
           amazonId: '9999',
@@ -648,7 +649,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'DELETE',
-      uri: 'http://127.0.0.1:1337/api/chores',
+      uri: urlBase + '/api/chores',
       json: {
         account: {
           amazonId: '9999',
@@ -686,7 +687,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'DELETE',
-      uri: 'http://127.0.0.1:1337/api/chores',
+      uri: urlBase + '/api/chores',
       json: {
         account: {
           amazonId: '9999',
@@ -724,7 +725,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'DELETE',
-      uri: 'http://127.0.0.1:1337/api/chores',
+      uri: urlBase + '/api/chores',
       json: {
         account: {
           amazonId: '9999',
@@ -762,7 +763,7 @@ describe('My-Nanny API', () => {
     // Post the user to /signup.
     request({
       method: 'DELETE',
-      uri: 'http://127.0.0.1:1337/api/chores',
+      uri: urlBase + '/api/chores',
       json: {
         account: {
           amazonId: '203498572309475',

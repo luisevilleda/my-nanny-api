@@ -2,7 +2,7 @@ import choresServices from '../services/choresServices';
 
 const ChoresController = {
   create: (req, res) => {
-    choresServices.create(req.body)
+    choresServices.create(req.body, req.user.id)
     .then(status => res.send(status))
     .catch(err => res.status(500).send(err));
   },
@@ -16,13 +16,13 @@ const ChoresController = {
   },
 
   update: (req, res) => {
-    choresServices.update(req.body)
+    choresServices.update(req.body, req.user.id)
     .then(status => res.send(status))
     .catch(err => res.status(500).send(err));
   },
 
   destroy: (req, res) => {
-    choresServices.destroy(req.body)
+    choresServices.destroy(req.body, req.user.id)
     .then(status => res.send(status))
     .catch(err => res.status(500).send(err));
   },

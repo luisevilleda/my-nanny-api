@@ -17,7 +17,7 @@ const accountRepository = {
     * @param data.phone - Account's phone number
     * @param data.email - Account's email
   */
-  create: function createaccount({ username, token, amazonId, timeZone, phone, email }) {
+  create: function createaccount({ username, token, timeZone, phone, email }, amazonId) {
     return Account.build({
       username,
       token,
