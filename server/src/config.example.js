@@ -1,5 +1,6 @@
 export default {
-  port: 1337,
+  // Node Express
+  port: 'FILL_ME_IN_WITH_A_NUMBER_REMOVE_QUOTES',
 
   // SQL credentials
   username: 'FILL_ME_IN',
@@ -8,5 +9,8 @@ export default {
 
   // AMAZON credentials
   amazonClientId: 'FILL_ME_IN',
-  amazonClientSecret: 'FILL_ME_IN'
+  amazonClientSecret: 'FILL_ME_IN',
+
+  // Redirect after login
+  redirectUrlAfterLogin: 'http://localhost:3000',
 };

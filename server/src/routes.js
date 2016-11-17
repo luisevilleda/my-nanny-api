@@ -2,16 +2,21 @@ import ChoresController from './controllers/ChoresController';
 import UserController from './controllers/UserController';
 import ChildrenController from './controllers/ChildrenController';
 import ScheduleController from './controllers/ScheduleController';
+// import fs from 'fs';
+import config from './config';
 
 const ensureAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) { return next(); }
-  res.sendStatus(401);
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  return res.sendStatus(401);
 };
 
 const routes = (app, passport) => {
-  //TEST
+  // TEST
   app.get('/test', ensureAuthenticated, (req, res) => {
-    return res.sendStatus(200);
+    // console.log('USER: ', req.user);
+    res.sendStatus(200);
   });
 
   /* /////// DOCS /////// */
@@ -20,14 +25,29 @@ const routes = (app, passport) => {
   /* /////// AUTH /////// */
 
   app.get('/login',
-          passport.authenticate('amazon', { scope: ['profile', 'postal_code'] }),
-          (req, res) => {});
+    passport.authenticate('amazon', { scope: ['profile', 'postal_code'] }),
+    (req, res) => {});
 
-  app.get('/login/callback', 
-          passport.authenticate('amazon', { failureRedirect: '/login' }),
-          function(req, res) {
-            res.redirect('/');
-          });
+  app.get('/login/callback',
+    passport.authenticate('amazon', { failureRedirect: '/login' }),
+    (req, res) => {
+      let email = 'null';
+      if (req.user.hasOwnProperty('emails') && req.user.emails.length) {
+        email = req.user.emails[0].value;
+      }
+      const pseudoReqBody = {
+        account: {
+          username: req.user.displayName,
+          email,
+        },
+      };
+      // Check if the account exists
+        // This will create one if it doesn't exist
+      UserController.create(pseudoReqBody, req.user.id, res)
+      // Whether the account existed before or not
+        // It definitely exists now
+      .then(status => res.redirect(config.redirectUrlAfterLogin));
+    });
 
   /**
   * @api {post} /logout Logout
