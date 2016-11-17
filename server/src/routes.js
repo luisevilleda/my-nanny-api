@@ -2,52 +2,14 @@ import ChoresController from './controllers/ChoresController';
 import UserController from './controllers/UserController';
 import ChildrenController from './controllers/ChildrenController';
 import ScheduleController from './controllers/ScheduleController';
-// import fs from 'fs';
-import config from './config';
-
-const ensureAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  return res.sendStatus(401);
-};
 
 const routes = (app, passport) => {
-  // TEST
-  app.get('/test', ensureAuthenticated, (req, res) => {
-    // console.log('USER: ', req.user);
-    res.sendStatus(200);
-  });
+  // passport.authenticate('amazon-token')
 
   /* /////// DOCS /////// */
   app.get('/', (req, res) => res.render('index', { title: 'my-nanny docs' }));
 
   /* /////// AUTH /////// */
-
-  app.get('/login',
-    passport.authenticate('amazon', { scope: ['profile', 'postal_code'] }),
-    (req, res) => {});
-
-  app.get('/login/callback',
-    passport.authenticate('amazon', { failureRedirect: '/login' }),
-    (req, res) => {
-      let email = 'null';
-      if (req.user.hasOwnProperty('emails') && req.user.emails.length) {
-        email = req.user.emails[0].value;
-      }
-      const pseudoReqBody = {
-        account: {
-          username: req.user.displayName,
-          email,
-        },
-      };
-      // Check if the account exists
-        // This will create one if it doesn't exist
-      UserController.create(pseudoReqBody, req.user.id, res)
-      // Whether the account existed before or not
-        // It definitely exists now
-      .then(status => res.redirect(config.redirectUrlAfterLogin));
-    });
 
   /**
   * @api {post} /logout Logout
@@ -81,7 +43,7 @@ const routes = (app, passport) => {
   *
   * @apiError Failed to update account.
   */
-  app.put('/api/account', UserController.updateAccount);
+  app.put('/api/account', passport.authenticate('amazon-token'), UserController.updateAccount);
 
   /**
   * @api {get} /api/account Get account info
@@ -150,7 +112,7 @@ const routes = (app, passport) => {
   *     }
   *
   */
-  app.get('/api/account', UserController.getInfo);
+  app.get('/api/account', passport.authenticate('amazon-token'), UserController.getInfo);
 
   /* /////// CHILDREN /////// */
 
@@ -173,7 +135,7 @@ const routes = (app, passport) => {
   *
   * @apiError Failed to add child.
   */
-  app.post('/api/children', ChildrenController.addChild);
+  app.post('/api/children', passport.authenticate('amazon-token'), ChildrenController.addChild);
 
   /**
   * @api {put} /api/children Update a child
@@ -195,7 +157,7 @@ const routes = (app, passport) => {
   *
   * @apiError Failed to update child.
   */
-  app.put('/api/children', ChildrenController.updateChild);
+  app.put('/api/children', passport.authenticate('amazon-token'), ChildrenController.updateChild);
 
   /**
   * @api {put} /api/children Delete a child
@@ -215,7 +177,7 @@ const routes = (app, passport) => {
   *
   * @apiError Failed to update child.
   */
-  app.delete('/api/children', ChildrenController.deleteChild);
+  app.delete('/api/children', passport.authenticate('amazon-token'), ChildrenController.deleteChild);
 
 
   /* /////// CHORES /////// */
@@ -225,14 +187,14 @@ const routes = (app, passport) => {
   * @apiGroup Chores
   *
   */
-  app.get('/api/chores', ChoresController.readAll);
+  app.get('/api/chores', passport.authenticate('amazon-token'), ChoresController.readAll);
 
   /**
   * @api {get} /api/chores/:id Get a specific chore?
   * @apiGroup Chores
   *
   */
-  app.get('/api/chores/:id', ChoresController.read);
+  app.get('/api/chores/:id', passport.authenticate('amazon-token'), ChoresController.read);
 
   /**
   * @api {post} /api/chores Add Chores to a Child
@@ -264,7 +226,7 @@ const routes = (app, passport) => {
   *
   * @apiError Failed to add chore.
   */
-  app.post('/api/chores', ChoresController.create);
+  app.post('/api/chores', passport.authenticate('amazon-token'), ChoresController.create);
 
   /**
   * @api {put} /api/chores Update chore(s) for a child
@@ -290,7 +252,7 @@ const routes = (app, passport) => {
   *     }
   *
   */
-  app.put('/api/chores', ChoresController.update);
+  app.put('/api/chores', passport.authenticate('amazon-token'), ChoresController.update);
 
   /**
   * @api {delete} /api/chores Destroy a child's chore(s)
@@ -312,7 +274,7 @@ const routes = (app, passport) => {
   *     }
   *
   */
-  app.delete('/api/chores', ChoresController.destroy);
+  app.delete('/api/chores', passport.authenticate('amazon-token'), ChoresController.destroy);
 
 
   /* /////// Schedule /////// */
@@ -321,7 +283,7 @@ const routes = (app, passport) => {
   * @api {get} /api/schedule Get schedule for a child
   * @apiGroup Schedule
   */
-  app.get('/api/schedule', ScheduleController.read);
+  app.get('/api/schedule', passport.authenticate('amazon-token'), ScheduleController.read);
 
   /**
   * @api {post} /api/schedule Create schedule for a child
@@ -350,13 +312,13 @@ const routes = (app, passport) => {
   *
   * @apiError Failed to add chore.
   */
-  app.post('/api/schedule', ScheduleController.create);
+  app.post('/api/schedule', passport.authenticate('amazon-token'), ScheduleController.create);
 
   /**
   * @api {put} /api/schedule Update schedule for a child
   * @apiGroup Schedule
   */
-  app.put('/api/schedule', ScheduleController.update);
+  app.put('/api/schedule', passport.authenticate('amazon-token'), ScheduleController.update);
 
   /**
   * @api {delete} /api/schedule Delete schedule for a child
@@ -384,7 +346,7 @@ const routes = (app, passport) => {
   *     }
   *
   */
-  app.delete('/api/schedule', ScheduleController.destroy);
+  app.delete('/api/schedule', passport.authenticate('amazon-token'), ScheduleController.destroy);
 };
 
 export default routes;
