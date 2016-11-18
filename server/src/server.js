@@ -29,7 +29,7 @@ passport.use(new AmazonTokenStrategy(
         username: profile.displayName,
         email,
       },
-    }, profile.id);
+    }, email);
 
     next(null, profile);
   }));
@@ -39,7 +39,7 @@ passport.deserializeUser((obj, done) => done(null, obj));
 const app = express();
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://my-nanny.org');
+  res.header('Access-Control-Allow-Origin', config.CORSurl);
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
   res.header('Access-Control-Allow-Methods', ['GET', 'PUT', 'POST', 'DELETE']);
   next();

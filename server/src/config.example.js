@@ -11,6 +11,6 @@ export default {
   amazonClientId: 'FILL_ME_IN',
   amazonClientSecret: 'FILL_ME_IN',
 
-  // Redirect after login
-  redirectUrlAfterLogin: 'http://localhost:3000',
+  // Urls that are allowed in CORS
+  CORSurl: 'http://localhost:3000',
 };
