@@ -3,7 +3,6 @@ import childrenServices from '../services/childrenServices';
 const ChildrenController = {
 
   addChild: (req, res) => {
-    console.log(req.body);
     childrenServices.addChild(req.body, req.user.id)
     .then(status => res.send(status))
     .catch(err => res.status(500).send(err));

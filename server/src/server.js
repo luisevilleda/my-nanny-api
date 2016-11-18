@@ -8,6 +8,7 @@ import AmazonTokenStrategy from 'passport-amazon-token';
 // import { Strategy } from 'passport-amazon';
 import routes from './routes';
 import config from './config';
+import UserController from './controllers/UserController';
 
 // These imports start the connection and model relationships
 import connection from './connection';
@@ -21,6 +22,15 @@ passport.use(new AmazonTokenStrategy(
     passReqToCallback: true,
   },
   (req, accessToken, refreshToken, profile, next) => {
+    // Make account if one does not exist
+    const email = profile.emails[0].value;
+    UserController.create({
+      account: {
+        username: profile.displayName,
+        email,
+      },
+    }, profile.id);
+
     next(null, profile);
   }));
 passport.serializeUser((user, done) => done(null, user));
