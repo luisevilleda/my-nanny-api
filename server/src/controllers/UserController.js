@@ -25,8 +25,9 @@ const UserController = {
       .catch(err => resolve(false))),
 
   updateAccount: (req, res) => {
-    console.log(req.user);
-    res.send(200);
+    accountServices.updateAccount(req.body, req.user.id)
+    .then(status => res.send(status))
+    .catch(err => res.status(500).send(err));
   },
 
 
