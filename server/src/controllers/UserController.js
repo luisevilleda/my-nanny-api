@@ -25,17 +25,19 @@ const UserController = {
       .catch(err => resolve(false))),
 
   updateAccount: (req, res) => {
-    accountServices.updateAccount(req.body, req.user.id)
-    .then(status => res.send(status))
-    .catch(err => res.status(500).send(err));
+    console.log(req.user);
+    res.send(200);
   },
 
-  getInfo: (amazonId, res) => {
-    accountServices.getAccountInfo({
-      account: {
-        amazonId,
-      },
-    })
+
+  // updateAccount: (req, res) => {
+  //   accountServices.updateAccount(req.body, req.user.id)
+  //   .then(status => res.send(status))
+  //   .catch(err => res.status(500).send(err));
+  // },
+
+  getInfo: (req, res) => {
+    accountServices.getAccountInfo(req.body, req.user.id)
     .then(data => res.send(data))
     .catch(err => res.status(500).send(err));
   },
