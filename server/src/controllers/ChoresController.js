@@ -26,6 +26,14 @@ const ChoresController = {
     .then(status => res.send(status))
     .catch(err => res.status(500).send(err));
   },
+
+  readOneChildsChores: (req, res) => {
+    // console.log('REQ PARAMS: ', req.user.id);
+    choresServices.readOneChildsChores(req.body, req.user.id)
+    .then(status => res.send(status))
+    .catch(err => res.status(500).send(err));
+  },
+
 };
 
 export default ChoresController;

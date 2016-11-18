@@ -4,7 +4,8 @@ import ChildrenController from './controllers/ChildrenController';
 import ScheduleController from './controllers/ScheduleController';
 
 const routes = (app, passport) => {
-  // passport.authenticate('amazon-token')
+  // Shorthand for gating routes
+  const auth = () => passport.authenticate('amazon-token');
 
   /* /////// DOCS /////// */
   app.get('/', (req, res) => res.render('index', { title: 'my-nanny docs' }));
@@ -43,7 +44,7 @@ const routes = (app, passport) => {
   *
   * @apiError Failed to update account.
   */
-  app.put('/api/account', passport.authenticate('amazon-token'), UserController.updateAccount);
+  app.put('/api/account', auth(), UserController.updateAccount);
 
   /**
   * @api {get} /api/account Get account info
@@ -112,7 +113,7 @@ const routes = (app, passport) => {
   *     }
   *
   */
-  app.get('/api/account', passport.authenticate('amazon-token'), UserController.getInfo);
+  app.get('/api/account', auth(), UserController.getInfo);
 
   /* /////// CHILDREN /////// */
 
@@ -135,7 +136,7 @@ const routes = (app, passport) => {
   *
   * @apiError Failed to add child.
   */
-  app.post('/api/children', passport.authenticate('amazon-token'), ChildrenController.addChild);
+  app.post('/api/children', auth(), ChildrenController.addChild);
 
   /**
   * @api {put} /api/children Update a child
@@ -157,7 +158,7 @@ const routes = (app, passport) => {
   *
   * @apiError Failed to update child.
   */
-  app.put('/api/children', passport.authenticate('amazon-token'), ChildrenController.updateChild);
+  app.put('/api/children', auth(), ChildrenController.updateChild);
 
   /**
   * @api {put} /api/children Delete a child
@@ -177,24 +178,34 @@ const routes = (app, passport) => {
   *
   * @apiError Failed to update child.
   */
-  app.delete('/api/children', passport.authenticate('amazon-token'), ChildrenController.deleteChild);
-
+  app.delete('/api/children', auth(), ChildrenController.deleteChild);
 
   /* /////// CHORES /////// */
+
+  /**
+  * @api {get} /api/children
+  *
+  *
+  *
+  *
+  *
+  */
+  app.get('/api/children/:id/chores', auth(), ChoresController.readOneChildsChores);
+
 
   /**
   * @api {get} /api/chores Get all chores for a child
   * @apiGroup Chores
   *
   */
-  app.get('/api/chores', passport.authenticate('amazon-token'), ChoresController.readAll);
+  app.get('/api/chores', auth(), ChoresController.readAll);
 
   /**
   * @api {get} /api/chores/:id Get a specific chore?
   * @apiGroup Chores
   *
   */
-  app.get('/api/chores/:id', passport.authenticate('amazon-token'), ChoresController.read);
+  app.get('/api/chores/:id', auth(), ChoresController.read);
 
   /**
   * @api {post} /api/chores Add Chores to a Child
@@ -226,7 +237,7 @@ const routes = (app, passport) => {
   *
   * @apiError Failed to add chore.
   */
-  app.post('/api/chores', passport.authenticate('amazon-token'), ChoresController.create);
+  app.post('/api/chores', auth(), ChoresController.create);
 
   /**
   * @api {put} /api/chores Update chore(s) for a child
@@ -252,7 +263,7 @@ const routes = (app, passport) => {
   *     }
   *
   */
-  app.put('/api/chores', passport.authenticate('amazon-token'), ChoresController.update);
+  app.put('/api/chores', auth(), ChoresController.update);
 
   /**
   * @api {delete} /api/chores Destroy a child's chore(s)
@@ -274,7 +285,7 @@ const routes = (app, passport) => {
   *     }
   *
   */
-  app.delete('/api/chores', passport.authenticate('amazon-token'), ChoresController.destroy);
+  app.delete('/api/chores', auth(), ChoresController.destroy);
 
 
   /* /////// Schedule /////// */
@@ -283,7 +294,7 @@ const routes = (app, passport) => {
   * @api {get} /api/schedule Get schedule for a child
   * @apiGroup Schedule
   */
-  app.get('/api/schedule', passport.authenticate('amazon-token'), ScheduleController.read);
+  app.get('/api/schedule', auth(), ScheduleController.read);
 
   /**
   * @api {post} /api/schedule Create schedule for a child
@@ -312,13 +323,13 @@ const routes = (app, passport) => {
   *
   * @apiError Failed to add chore.
   */
-  app.post('/api/schedule', passport.authenticate('amazon-token'), ScheduleController.create);
+  app.post('/api/schedule', auth(), ScheduleController.create);
 
   /**
   * @api {put} /api/schedule Update schedule for a child
   * @apiGroup Schedule
   */
-  app.put('/api/schedule', passport.authenticate('amazon-token'), ScheduleController.update);
+  app.put('/api/schedule', auth(), ScheduleController.update);
 
   /**
   * @api {delete} /api/schedule Delete schedule for a child
@@ -346,7 +357,7 @@ const routes = (app, passport) => {
   *     }
   *
   */
-  app.delete('/api/schedule', passport.authenticate('amazon-token'), ScheduleController.destroy);
+  app.delete('/api/schedule', auth(), ScheduleController.destroy);
 };
 
 export default routes;

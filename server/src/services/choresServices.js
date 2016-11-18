@@ -124,6 +124,40 @@ const choresServices = {
       });
     }),
 
+  readOneChildsChores: (data, amazonId) =>
+    new Promise((resolve, reject) => {
+      // Check if account exists
+      accountRepository.findAccountByAmazonId(amazonId)
+      .then((account) => {
+        if (!account) {
+          reject('Cannot get chores, account does not exist.');
+        } else {
+          // Check if child exists
+          // Find the account's child by the child's id
+          childrenRepository.findOneByIdAmazonId(data.child, amazonId)
+          .then((child) => {
+            if (!child) {
+              reject('Cannot get chores, child does not exist.');
+            } else {
+              // Get all of the chores for the child model
+              choresRepository.getChoresForChildById(child)
+              .then((chores) => {
+                const choresToDelete = data.chores;
+                chores.forEach((chore) => {
+                  choresToDelete.forEach((choreToDelete) => {
+                    if (Number(chore.id) === Number(choreToDelete.id)) {
+                      choresRepository.destroy(chore);
+                    }
+                  });
+                });
+                resolve('Successfully destroyed chores.');
+              });
+            }
+          });
+        }
+      });
+    }),
+
 };
 
 export default choresServices;
