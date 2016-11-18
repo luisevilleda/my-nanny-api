@@ -29,7 +29,7 @@ passport.use(new AmazonTokenStrategy(
         username: profile.displayName,
         email,
       },
-    }, profile.id);
+    }, email);
 
     next(null, profile);
   }));

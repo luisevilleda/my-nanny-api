@@ -54,18 +54,18 @@ const childrenRepository = {
   save: child => child.save(),
 
   /**
-    * @function findOneByIdAmazonId
-    * @desc Finds one child based on their name and accoutn amazonId
+    * @function findOneByIdEmail
+    * @desc Finds one child based on their name and account email
     * @param {object} child
-    * @param {string} child.name
-    * @param {string} amazonId - The amazonId of the account
+    * @param {string} child.id
+    * @param {string} email - The email of the account
     * @returns {promise} promise - Resolves to array of children or []
    */
-  findOneByIdAmazonId: ({ id }, amazonId) =>
+  findOneByIdEmail: ({ id }, email) =>
     new Promise((resolve) => {
       Account.findOne({
         where: {
-          amazonId,
+          email,
         },
         include: [{
           model: Child,
@@ -85,18 +85,18 @@ const childrenRepository = {
     }),
 
   /**
-    * @function findOneByIdAmazonId
-    * @desc Finds one child of a account based on their id and account amazonId
+    * @function findOneByNameEmail
+    * @desc Finds one child of a account based on their name and account email
     * @param {object} child
     * @param {string} child.name
-    * @param {string} amazonId - The amazonId of the account
+    * @param {string} email - The email of the account
     * @returns {promise} promise - Resolves to array of children or []
    */
-  findOneByNameAmazonId: ({ name }, amazonId) =>
+  findOneByNameEmail: ({ name }, email) =>
     new Promise((resolve) => {
       Account.findOne({
         where: {
-          amazonId,
+          email,
         },
         include: [{
           model: Child,
@@ -116,17 +116,17 @@ const childrenRepository = {
     }),
 
   /**
-    * @function findAllByAmazonId
+    * @function findAllByEmail
     *
     *
     *
     *
   */
-  findAllByAmazonId: amazonId =>
+  findAllByEmail: email =>
     new Promise((resolve, reject) => {
       Account.findOne({
         where: {
-          amazonId,
+          email,
         },
         include: [{
           model: Child,

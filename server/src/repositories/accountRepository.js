@@ -12,16 +12,14 @@ const accountRepository = {
     * @param {object} data
     * @param data.username - The username for the account
     * @param data.token - Account's phone number
-    * @param data.amazonId - Account's id from amazon
     * @param data.timeZone - Account's timeZone
     * @param data.phone - Account's phone number
     * @param data.email - Account's email
   */
-  create: function createaccount({ username, token, timeZone, phone, email }, amazonId) {
+  create: function createaccount({ username, token, timeZone, phone }, email) {
     return Account.build({
       username,
       token,
-      amazonId,
       timeZone,
       phone,
       email,
@@ -75,14 +73,14 @@ const accountRepository = {
 
   /**
     * @function getAllAccountInfo
-    * @param {string} amazonId - The amazonId of the account
+    * @param {string} email - The email of the account
     * @returns {object} - An object containing all relevant account info
   */
-  getAllAccountInfo: amazonId =>
+  getAllAccountInfo: email =>
     new Promise((resolve, reject) => {
       Account.findOne({
         where: {
-          amazonId,
+          email,
         },
         attributes: {
           exclude: ['createdAt', 'updatedAt'],

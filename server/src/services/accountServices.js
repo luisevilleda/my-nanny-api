@@ -18,21 +18,21 @@ const accountServices = {
     * @param {object} data - An object with new account info
     * @param {string} data.account.username
     * @param {string} data.account.token - The token given my Amazon's OAuth
-    * @param {string} amazonId - The account's Amazon Id
+    * @param {string} email - The account's email that comes from the Amazon token
     * @param {string} data.account.timeZone
     * @param {object} data.account.phone
     * @param {object} data.account.email
     * @returns {promise}
    */
-  createNewAccount: (data, amazonId) =>
+  createNewAccount: (data, email) =>
     new Promise((resolve, reject) => {
-      accountRepository.findAccountByAmazonId(amazonId)
+      accountRepository.findAccountByEmail(email)
       .then((account) => {
         if (account) {
           // If account exists already, return an error
           reject('Failed to create account.');
         } else {
-          const newAccount = accountRepository.create(data.account, amazonId);
+          const newAccount = accountRepository.create(data.account, email);
           newAccount.save();
           const { id, username, token } = newAccount;
           resolve(JSON.stringify({ id, username, token }));
@@ -43,19 +43,19 @@ const accountServices = {
   /**
     * @function login
     * @param {object} data - Contains an account
-    * @param {string} amazonId
+    * @param {string} email
     * @returns {promise} - Resolves to the user's account info
   */
-  login: (data, amazonId) =>
+  login: (data, email) =>
     new Promise((resolve, reject) => {
-      accountRepository.findAccountByAmazonId(amazonId)
+      accountRepository.findAccountByEmail(email)
       .then((account) => {
         if (!account) {
           // If account does not exist, login fails
           reject('Failed to log in.');
         } else {
           // send them all the info for the account
-          accountRepository.getAllAccountInfo(amazonId)
+          accountRepository.getAllAccountInfo(email)
           .then(accountInfo => resolve(JSON.stringify(accountInfo)));
         }
       });
@@ -64,13 +64,13 @@ const accountServices = {
   /**
     * @function updateAccount
     * @param {object} data - Contains an account
-    * @param {string} amazonId
+    * @param {string} email
     * @param {object} data.account
     * @returns {promise}
   */
-  updateAccount: (data, amazonId) =>
+  updateAccount: (data, email) =>
     new Promise((resolve, reject) => {
-      accountRepository.findAccountByAmazonId(amazonId)
+      accountRepository.findAccountByEmail(email)
       .then((account) => {
         if (!account) {
           reject('Cannot update account. Account doesn\'t exist');
@@ -81,22 +81,23 @@ const accountServices = {
             // Authenticating who the user is
           const updatedAccount = data.account;
           delete updatedAccount.amazonId;
+          delete updatedAccount.email;
           account.updateAttributes(data.account);
           resolve('Account updated successfully.');
         }
       });
     }),
 
-  getAccountInfo: (data, amazonId) =>
+  getAccountInfo: (data, email) =>
     new Promise((resolve, reject) => {
-      accountRepository.findAccountByAmazonId(amazonId)
+      accountRepository.findAccountByEmail(email)
       .then((account) => {
         if (!account) {
           // If account does not exist, login fails
           reject('Failed to get account info, account does not exist.');
         } else {
           // send them all the info for the account
-          accountRepository.getAllAccountInfo(amazonId)
+          accountRepository.getAllAccountInfo(email)
           .then(accountInfo => resolve(JSON.stringify(accountInfo)));
         }
       });

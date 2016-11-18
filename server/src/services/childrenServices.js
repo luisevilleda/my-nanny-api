@@ -17,21 +17,20 @@ const childrenServices = {
   /**
     * @function addChild
     * @param {object} data - Contains separate account and child objects
-    * @param {object} data.account - Contains a account's info
-    * @param {string} amazonId
+    * @param {string} email, the email associated with the account
     * @param {object} data.child - The child
     * @param {string} data.child.name
     * @param {string} data.child.phone
     * @returns {promise}
   */
-  addChild: (data, amazonId) =>
+  addChild: (data, email) =>
     new Promise((resolve, reject) => {
-      accountRepository.findAccountByAmazonId(amazonId)
+      accountRepository.findAccountByEmail(email)
       .then((account) => {
         if (!account) {
           reject('Cannot add child, account does not exist.');
         } else {
-          childrenRepository.findOneByNameAmazonId(data.child, amazonId)
+          childrenRepository.findOneByNameEmail(data.child, email)
           .then((children) => {
             if (children) {
               reject('Child already exists');
@@ -49,22 +48,21 @@ const childrenServices = {
   /**
     * @function updateChild
     * @param {object} data - Contains an account
-    * @param {object} data.account - Contains amazonId
-    * @param {string} amazonId
+    * @param {string} email
     * @param {object} data.child - MUST contains ORIGINAL child name
     * @param {string} data.child.name - MUST be ORIGINAL child name
     * @param {string} data.updatedChild.name - Child's updated name
     * @param {string} data.updatedChild.phone - Child's updated name
     * @returns {promise}
   */
-  updateChild: (data, amazonId) =>
+  updateChild: (data, email) =>
   new Promise((resolve, reject) => {
-    accountRepository.findAccountByAmazonId(amazonId)
+    accountRepository.findAccountByEmail(email)
       .then((account) => {
         if (!account) {
           reject('Cannot edit child, account does not exist.');
         } else {
-          childrenRepository.findOneByIdAmazonId(data.child, amazonId)
+          childrenRepository.findOneByIdEmail(data.child, email)
           .then((child) => {
             if (!child) {
               reject('Child doesn\'t exist.');
@@ -79,24 +77,19 @@ const childrenServices = {
   }),
 
   /**
-    * @function updateChild
-    * @param {object} data - Contains an account
-    * @param {object} data.account - Contains amazonId
-    * @param {string} amazonId
-    * @param {object} data.child - MUST contains ORIGINAL child name
-    * @param {string} data.child.name - MUST be ORIGINAL child name
-    * @param {string} data.updatedChild.name - Child's updated name
-    * @param {string} data.updatedChild.phone - Child's updated name
+    * @function deleteChild
+    * @param {string} email
+    * @param {object} data.child - MUST contains child ID
     * @returns {promise}
   */
-  deleteChild: (data, amazonId) =>
+  deleteChild: (data, email) =>
   new Promise((resolve, reject) => {
-    accountRepository.findAccountByAmazonId(amazonId)
+    accountRepository.findAccountByEmail(email)
       .then((account) => {
         if (!account) {
           reject('Cannot delete child, account does not exist.');
         } else {
-          childrenRepository.findOneByIdAmazonId(data.child, amazonId)
+          childrenRepository.findOneByIdEmail(data.child, email)
           .then((child) => {
             console.log(child);
             if (!child) {

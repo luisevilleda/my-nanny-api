@@ -3,7 +3,7 @@ import accountServices from '../services/accountServices';
 
 const UserController = {
   login: (req, res) => {
-    accountServices.login(req.body, req.user.id)
+    accountServices.login(req.body, req.user.emails[0].value)
     .then(status => res.send(status))
     .catch(err => res.status(500).send(err));
   },
@@ -12,9 +12,9 @@ const UserController = {
     res.send('User logout is not implemented yet');
   },
 
-  create: (pseudoBody, amazonId) =>
+  create: (pseudoBody, email) =>
     new Promise(resolve =>
-      accountServices.createNewAccount(pseudoBody, amazonId)
+      accountServices.createNewAccount(pseudoBody, email)
       .then(status => resolve(true))
       // We don't care if there was a failure making the account
         // It will fail if the account already exists
@@ -25,20 +25,20 @@ const UserController = {
       .catch(err => resolve(false))),
 
   updateAccount: (req, res) => {
-    accountServices.updateAccount(req.body, req.user.id)
+    accountServices.updateAccount(req.body, req.user.emails[0].value)
     .then(status => res.send(status))
     .catch(err => res.status(500).send(err));
   },
 
 
   // updateAccount: (req, res) => {
-  //   accountServices.updateAccount(req.body, req.user.id)
+  //   accountServices.updateAccount(req.body, req.user.emails[0].value)
   //   .then(status => res.send(status))
   //   .catch(err => res.status(500).send(err));
   // },
 
   getInfo: (req, res) => {
-    accountServices.getAccountInfo(req.body, req.user.id)
+    accountServices.getAccountInfo(req.body, req.user.emails[0].value)
     .then(data => res.send(data))
     .catch(err => res.status(500).send(err));
   },
