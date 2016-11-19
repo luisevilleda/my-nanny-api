@@ -59,6 +59,22 @@ routes(app, passport);
 const port = process.env.devPort || config.port;
 console.log(`server is listening on port ${port}`);
 
-app.listen(port);
+if (config.env === 'dev') {
+  const https = require ('https');
+  const fs = require ('fs');
+  const options = {
+    key: fs.readFileSync(config.key, 'utf8'),
+    cert: fs.readFileSync(config.crt, 'utf8'),
+    requestCert: false,
+    rejectUnauthorized: false,
+  };
+  const server = https.createServer(options, app).listen(config.port, function() {
+    console.log('server started');
+  });
+} else {
+  app.listen(port);  
+}; 
+
+
 
 export default app;
