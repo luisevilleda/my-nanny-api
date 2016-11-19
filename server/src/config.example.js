@@ -19,5 +19,3 @@ export default {
   // Urls that are allowed in CORS
   CORSurl: 'http://localhost:3000',
 };
-
-
