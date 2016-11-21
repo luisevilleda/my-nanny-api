@@ -7,3 +7,5 @@ resReq.js
 
 # Exception, this is so that the docs folder shows up in commits
 !.gitkeep
+
+ssl/*
