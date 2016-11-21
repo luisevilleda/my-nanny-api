@@ -8,11 +8,11 @@ const ChoresController = {
   },
 
   read: (req, res) => {
-    res.send('Chors read is not implemented yet');
+    res.send('Chores read is not implemented yet');
   },
 
   readAll: (req, res) => {
-    res.send('Chors read all is not implemented yet');
+    res.send('Chores read all is not implemented yet');
   },
 
   update: (req, res) => {

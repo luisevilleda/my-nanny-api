@@ -136,6 +136,29 @@ const routes = (app, passport) => {
   *
   * @apiError Failed to add child.
   */
+  app.get('/api/account/:id/children', auth(), UserController.getChildren);
+
+  /* /////// CHILDREN /////// */
+
+  /**
+  * @api {post} /api/children Add Child to Account
+  * @apiGroup Children
+  *
+  * @apiParamExample POST format:
+  *     {
+  *       "account": {
+  *         "amazonId": "999888777666"
+  *       },
+  *       "child": {
+  *         "name": "Winston",
+  *         "phone": "8887776666"
+  *       }
+  *     }
+  *
+  * @apiSuccess {String} Successfully added child.
+  *
+  * @apiError Failed to add child.
+  */
   app.post('/api/children', auth(), ChildrenController.addChild);
 
   /**
