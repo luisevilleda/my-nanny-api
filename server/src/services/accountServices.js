@@ -103,19 +103,6 @@ const accountServices = {
       });
     }),
 
-  getChildren: (data, email) =>
-    new Promise((resolve, reject) => {
-      accountRepository.findAccountByEmail(email)
-      .then((account) => {
-        if (!account) {
-          reject('Failed to get info, account does not exist.');
-        } else {
-          accountRepository.getChildrenInfo(email)
-          .then(childrenInfo => resolve(JSON.stringify(childrenInfo)));
-        }
-      })
-    }),
-
 };
 
 export default accountServices;

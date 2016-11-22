@@ -115,19 +115,59 @@ const routes = (app, passport) => {
   */
   app.get('/api/account', auth(), UserController.getInfo);
 
-  /* /////// ACCOUNT /////// */
+  /* /////// CHILDREN /////// */
 
   /**
-  * @api {get} /api/account/:id/children Get all children associate with account
-  * @apiGroup Account
+  * @api {get} /api/children/:id Get all information for one child
+  * @apiGroup Children
   * @apiParamExample GET format:
-  *      https://api.my-nanny.org/api/account/:id/children/?access_token= + amazon-token
+  *      https://api.my-nanny.org/api/children/:id?access_token= + amazon-token
   *
   * @apiSuccessExample Success-Response:
   *
   *    {
   *       "account": {
   *         "id": 1
+  *         "token": "1234",
+  *         "username": "Mary",
+  *         "amazonId": "999888777666",
+  *         "timeZone": "EST",
+  *         "phone": "1234567890",
+  *         "email": "mary@example.com"
+  *       },
+  *       "children": [
+  *         {
+  *           "id": 1,
+  *           "name": "Winston",
+  *           "accountId": 1,
+  *           "phone": "2125241324"
+  *           }
+  *       ]
+  *     }
+  *
+  *
+  */
+  app.get('/api/children/:id', auth(), ChildrenController.getChild);
+
+  /* /////// CHILDREN /////// */
+
+  /**
+  * @api {get} /api/children Get all children associate with account
+  * @apiGroup Children
+  * @apiParamExample GET format:
+  *      https://api.my-nanny.org/api/children?access_token= + amazon-token
+  *
+  * @apiSuccessExample Success-Response:
+  *
+  *    {
+  *       "account": {
+  *         "id": 1
+  *         "token": "1234",
+  *         "username": "Mary",
+  *         "amazonId": "999888777666",
+  *         "timeZone": "EST",
+  *         "phone": "1234567890",
+  *         "email": "mary@example.com"
   *       },
   *       "children": [
   *         {
@@ -147,7 +187,8 @@ const routes = (app, passport) => {
   *
   *
   */
-  app.get('/api/account/children', auth(), UserController.getChildren);
+  app.get('/api/children', auth(), ChildrenController.getChildren);
+
 
   /* /////// CHILDREN /////// */
 

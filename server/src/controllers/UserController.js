@@ -30,17 +30,12 @@ const UserController = {
     .catch(err => res.status(500).send(err));
   },
 
-  getChildren: (req, res) => {
-    accountServices.getChildren(req.body, req.user.emails[0].value)
-    .then(status => res.send(status))
-    .catch(err => res.status(500).send(err));
-  },
-
   getInfo: (req, res) => {
     accountServices.getAccountInfo(req.body, req.user.emails[0].value)
     .then(data => res.send(data))
     .catch(err => res.status(500).send(err));
   },
+
 
 };
 
