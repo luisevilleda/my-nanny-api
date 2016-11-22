@@ -116,6 +116,33 @@ const accountRepository = {
       .catch(err => reject(err));
     }),
 
+  getChildrenInfo: email =>
+    new Promise((resolve, reject) => {
+      Account.findOne({
+        where: {
+          email,
+        },
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+        include: [{
+          model: Child,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          }, 
+        }],
+      })
+    .then((foundAccount) => {
+      if (foundAccount) {
+        resolve(foundAccount);
+      } else {
+        resolve(null);
+      }
+    })
+    .catch(err => reject(err));
+  }),
+
 };
+
 
 export default accountRepository;

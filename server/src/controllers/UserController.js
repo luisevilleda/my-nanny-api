@@ -31,7 +31,7 @@ const UserController = {
   },
 
   getChildren: (req, res) => {
-    accountServices.getChildren(req.body, req.params.id)
+    accountServices.getChildren(req.body, req.user.emails[0].value)
     .then(status => res.send(status))
     .catch(err => res.status(500).send(err));
   },
