@@ -20,7 +20,7 @@ const UserController = {
         // It will fail if the account already exists
         // Even if it fails the first time,
         // The client won't recieve any info
-        // For someone elses account
+        // For someone else's account
         // Because of their cookie
       .catch(err => resolve(false))),
 
@@ -30,18 +30,12 @@ const UserController = {
     .catch(err => res.status(500).send(err));
   },
 
-
-  // updateAccount: (req, res) => {
-  //   accountServices.updateAccount(req.body, req.user.emails[0].value)
-  //   .then(status => res.send(status))
-  //   .catch(err => res.status(500).send(err));
-  // },
-
   getInfo: (req, res) => {
     accountServices.getAccountInfo(req.body, req.user.emails[0].value)
     .then(data => res.send(data))
     .catch(err => res.status(500).send(err));
   },
+
 
 };
 

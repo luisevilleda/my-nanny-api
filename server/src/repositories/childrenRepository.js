@@ -61,7 +61,9 @@ const childrenRepository = {
     * @param {string} email - The email of the account
     * @returns {promise} promise - Resolves to array of children or []
    */
-  findOneByIdEmail: ({ id }, email) =>
+
+
+  findOneByIdEmail: (id, email) =>
     new Promise((resolve) => {
       Account.findOne({
         where: {
@@ -92,6 +94,7 @@ const childrenRepository = {
     * @param {string} email - The email of the account
     * @returns {promise} promise - Resolves to array of children or []
    */
+
   findOneByNameEmail: ({ name }, email) =>
     new Promise((resolve) => {
       Account.findOne({
@@ -116,32 +119,109 @@ const childrenRepository = {
     }),
 
   /**
-    * @function findAllByEmail
-    *
-    *
-    *
-    *
-  */
-  findAllByEmail: email =>
+    * @function getBasicInfoForAllChildren
+    * @desc Gets basic details (name, phone) for all account's children
+    * @param {string} email - The email of the account
+    * @returns {promise} promise - Resolves to array of children or []
+   */
+
+  getBasicInfoForAllChildren: email =>
     new Promise((resolve, reject) => {
       Account.findOne({
         where: {
           email,
         },
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
         include: [{
           model: Child,
-          include: [Schedule, Chore],
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          }, 
         }],
       })
-      .then((foundAccount) => {
-        if (foundAccount) {
-          resolve(foundAccount.children);
+    .then((foundAccount) => {
+      if (foundAccount) {
+        resolve(foundAccount);
+      } else {
+        resolve(null);
+      }
+    })
+    .catch(err => reject(err));
+  }),
+
+
+/**
+    * @function getDetailedInfoForOneChild
+    * @desc Gets basic details (name, phone) for all account's children
+    * @param {string} email - The email of the account
+    * @returns {promise} promise - Resolves to array of children or []
+   */
+
+  getDetailedInfoForOneChild: (id, email) =>
+    new Promise((resolve) => {
+      Child.findOne({
+        where: {
+          id,
+        },
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+        include: [
+            {
+              model: Schedule,
+              attributes: {
+                exclude: ['createdAt', 'updatedAt'],
+              },
+            },
+            {
+              model: Chore,
+              attributes: {
+                exclude: ['createdAt', 'updatedAt'],
+              },
+            },
+          ],
+        })
+      .then((child) => {
+        if (child) {
+          resolve(child);
         } else {
           resolve(null);
         }
       })
-      .catch(err => reject(err));
+      .catch(err => console.log(err));
     }),
+
+
+  /**
+    * @function getDetailedInfoForAllChildren
+    * @desc Gets all information for all account's children
+    * @param {string} email - The email of the account
+    * @returns {promise} promise - Resolves to array of children or []
+  */
+
+  // getDetailedInfoForAllChildren: email =>
+  //   new Promise((resolve, reject) => {
+  //     Account.findOne({
+  //       where: {
+  //         email,
+  //       },
+  //       include: [{
+  //         model: Child,
+  //         include: [Schedule, Chore],
+  //       }],
+  //     })
+  //     .then((foundAccount) => {
+  //       if (foundAccount) {
+  //         resolve(foundAccount.children);
+  //       } else {
+  //         resolve(null);
+  //       }
+  //     })
+  //     .catch(err => reject(err));
+  //   }),
+
 
   /**
     * @function findAccountByEmail
@@ -156,6 +236,7 @@ const childrenRepository = {
    */
   findAccountByPhone: phone =>
     Child.findOne({ where: { phone } }),
+
 
 };
 

@@ -45,6 +45,41 @@ const childrenServices = {
       });
     }),
 
+
+  getChildren: (data, email) =>
+    new Promise((resolve, reject) => {
+      accountRepository.findAccountByEmail(email)
+      .then((account) => {
+        if (!account) {
+          reject('Failed to get info, account does not exist.');
+        } else {
+          childrenRepository.getBasicInfoForAllChildren(email)
+          .then(childrenInfo => resolve(JSON.stringify(childrenInfo)));
+        }
+      })
+    }),
+
+
+  getChild: (data, email, id) =>
+    new Promise((resolve, reject) => {
+      accountRepository.findAccountByEmail(email)
+      .then((account) => {
+        if (!account) {
+          reject('Failed to get info, account does not exist.');
+        } else {
+          childrenRepository.findOneByIdEmail(id, email)
+          .then((child) => {
+            if (!child) {
+              reject('Child does not exist.');
+            } else {
+              childrenRepository.getDetailedInfoForOneChild(id, email)
+              .then(childInfo => resolve(JSON.stringify(childInfo)));
+            }
+          });
+        }
+      });
+    }),
+
   /**
     * @function updateChild
     * @param {object} data - Contains an account
