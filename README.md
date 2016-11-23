@@ -19,9 +19,11 @@ sudo npm run start
 
 # API Doc
 
-| Type | URI | Arguments | Return Value | Comment |
-|------|-----|-----------|--------------|---------|
-| GET  | /api/chores | | List of Chores | Chores based on loged in user |
+Describe the API Doc
+
+image of the api doc
+
+Link to api
 
 # FRIEND #
 
