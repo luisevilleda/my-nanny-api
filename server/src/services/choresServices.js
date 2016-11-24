@@ -11,6 +11,33 @@ import scheduleRepository from '../repositories/scheduleRepository';
 import curfewsRepository from '../repositories/curfewsRepository';
 import db from '../connection';
 
+const readOneChildsChores = (childId, email) =>
+  new Promise((resolve, reject) => {
+    // Check if account exists
+    accountRepository.findAccountByEmail(email)
+    .then((account) => {
+      if (!account) {
+        reject('Cannot get chores, account does not exist.');
+      } else {
+        // Check if child exists
+        // Find the account's child by the child's id
+        childrenRepository.findOneByIdEmail({ id: childId }, email)
+        .then((child) => {
+          if (!child) {
+            reject('Cannot get chores, child does not exist.');
+          } else {
+            // Get all of the chores for the child model
+            choresRepository.getChoresForChildById(child)
+            .then((chores) => {
+              resolve(chores);
+            });
+          }
+        });
+      }
+    });
+  });
+
+
 /** @module Services: Children */
 const choresServices = {
 
@@ -123,38 +150,21 @@ const choresServices = {
       });
     }),
 
-  readOneChildsChores: (data, email) =>
+  readOneChildsChores,
+
+  getChoresForDateRange: (req, email) =>
     new Promise((resolve, reject) => {
-      // Check if account exists
-      accountRepository.findAccountByEmail(email)
-      .then((account) => {
-        if (!account) {
-          reject('Cannot get chores, account does not exist.');
-        } else {
-          // Check if child exists
-          // Find the account's child by the child's id
-          childrenRepository.findOneByIdEmail(data.child, email)
-          .then((child) => {
-            if (!child) {
-              reject('Cannot get chores, child does not exist.');
-            } else {
-              // Get all of the chores for the child model
-              choresRepository.getChoresForChildById(child)
-              .then((chores) => {
-                const choresToDelete = data.chores;
-                chores.forEach((chore) => {
-                  choresToDelete.forEach((choreToDelete) => {
-                    if (Number(chore.id) === Number(choreToDelete.id)) {
-                      choresRepository.destroy(chore);
-                    }
-                  });
-                });
-                resolve('Successfully destroyed chores.');
-              });
-            }
-          });
-        }
-      });
+      readOneChildsChores(req.params.id, email)
+      .then((chores) => {
+        const startDate = req.query.startDate || '0000-00-00';
+        const endDate = req.query.endDate || '9999-99-99';
+        console.log(startDate, endDate);
+        const todaysChores = chores.filter(chore =>
+          chore.date >= startDate && chore.date <= endDate);
+        resolve(todaysChores);
+        // reject('Dates provided not valid. Please provide startDate and endDate OR just date.');
+      })
+      .catch(err => reject(err));
     }),
 
 };

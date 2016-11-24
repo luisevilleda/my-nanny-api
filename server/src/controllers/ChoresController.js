@@ -34,6 +34,12 @@ const ChoresController = {
     .catch(err => res.status(500).send(err));
   },
 
+  getChoresForDateRange: (req, res) => {
+    choresServices.getChoresForDateRange(req, req.user.emails[0].value)
+    .then(status => res.send(status))
+    .catch(err => res.status(500).send(err));
+  },
+
 };
 
 export default ChoresController;

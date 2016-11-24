@@ -9,7 +9,7 @@ const Schedule = db.define('schedule', {
   thursday: Sequelize.STRING,
   friday: Sequelize.STRING,
   saturday: Sequelize.STRING,
-  dateOfLastCurfew: Sequelize.STRING,
+  dateOfLastCheckin: Sequelize.STRING,
 });
 
 export default Schedule;

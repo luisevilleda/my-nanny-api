@@ -2,7 +2,9 @@ import scheduleServices from '../services/scheduleServices';
 
 const ScheduleController = {
   read: (req, res) => {
-    res.send('Schedule read not implemented yet.');
+    scheduleServices.read(req, req.user.emails[0].value)
+    .then(status => res.send(status))
+    .catch(err => res.status(500).send(err));
   },
 
   create: (req, res) => {

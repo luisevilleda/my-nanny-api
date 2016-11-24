@@ -97,7 +97,9 @@ const accountServices = {
           reject('Failed to get account info, account does not exist.');
         } else {
           // send them all the info for the account
-          accountRepository.getAllAccountInfo(email)
+          // accountRepository.getAllAccountInfo(email)
+          // .then(accountInfo => resolve(JSON.stringify(accountInfo)));
+          accountRepository.getAccountAndChildren(email)
           .then(accountInfo => resolve(JSON.stringify(accountInfo)));
         }
       });
