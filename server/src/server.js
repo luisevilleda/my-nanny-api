@@ -72,9 +72,8 @@ if (config.env === 'dev') {
     console.log('server started');
   });
 } else {
-  app.listen(port);  
-}; 
-
+  app.listen(port);
+};
 
 
 export default app;

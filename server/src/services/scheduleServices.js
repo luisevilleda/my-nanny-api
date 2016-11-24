@@ -13,7 +13,44 @@ import db from '../connection';
 
 /** @module Services: Children */
 const schedlueServices = {
-  read: (data, email) => null,
+  read: (req, email) =>
+    new Promise((resolve, reject) => {
+      // Check if the account exists
+      accountRepository.findAccountByEmail(email)
+      .then((account) => {
+        if (!account) {
+          reject('Cannot get schedule, account does not exist.');
+        } else {
+          // Check if the child exists
+          childrenRepository.findOneByIdEmail({ id: req.params.id }, email)
+          .then((child) => {
+            if (!child) {
+              reject('Cannot update schedule, child does not exist');
+            } else {
+              scheduleRepository.findScheduleIfExists({ id: req.params.id }, email)
+              .then((schedule) => {
+                if (!schedule) {
+                  reject('Cannot update schedule, schedule does not exist.');
+                } else {
+                  const scheduleToSend = JSON.parse(JSON.stringify(schedule));
+                  delete scheduleToSend.childId;
+                  delete scheduleToSend.createdAt;
+                  delete scheduleToSend.updatedAt;
+                  delete scheduleToSend.childId;
+                  const responseObj = {
+                    child: {
+                      id: req.params.id,
+                      schedule: scheduleToSend,
+                    },
+                  };
+                  resolve(responseObj);
+                }
+              });
+            }
+          });
+        }
+      });
+    }),
 
   /**
     * @function create

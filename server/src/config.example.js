@@ -7,6 +7,8 @@ export default {
   password: 'FILL_ME_IN',
   database: process.env.NODE_ENV === 'test' ? 'chaiTest' : 'FILL_ME_IN',
   env: 'dev',
+
+  // Localhost SSL
   key: 'PATH_TO_KEY',
   crt: 'PATH_TO_CERTIFICATE',
 
@@ -14,10 +16,6 @@ export default {
   amazonClientId: 'FILL_ME_IN',
   amazonClientSecret: 'FILL_ME_IN',
 
-  redirectUrlAfterLogin: 'https://localhost:3000/',
-
   // Urls that are allowed in CORS
   CORSurl: 'http://localhost:3000',
 };
-
-

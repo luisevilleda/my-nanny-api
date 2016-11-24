@@ -34,7 +34,7 @@ const routes = (app, passport) => {
   *       "account": {
   *         "amazonId": "999888777666",
   *         "username": "George",
-  *         "timeZone": "EST",
+  *         "timezone": "EST",
   *         "phone": "9990009999",
   *         "email": "george@anotherExample.com"
   *       }
@@ -51,17 +51,14 @@ const routes = (app, passport) => {
   * @apiGroup Account
   *
   * @apiParamExample GET format:
-  *      https://api.my-nanny.org/api/account?amazonId=999888777666
+  *      https://api.my-nanny.org/api/account?access_token=Atza%...
   *
   * @apiSuccessExample Success-Response:
   *
   *     {
   *       "account": {
-  *         "id": 1,
-  *         "token": "1234",
   *         "username": "Mary",
-  *         "amazonId": "999888777666",
-  *         "timeZone": "EST",
+  *         "timezone": "EST",
   *         "phone": "1234567890",
   *         "email": "mary@example.com"
   *       },
@@ -69,45 +66,12 @@ const routes = (app, passport) => {
   *         {
   *           "id": 1,
   *           "name": "Winston",
-  *           "accountId": 1,
-  *           "schedule": {
-  *             "id": 15,
-  *             "dateOfLastCurfew": "2000-12-31",
-  *             "sunday": "null",
-  *             "monday": "null",
-  *             "tuesday": "12:30",
-  *             "wednesday": "14:05",
-  *             "thursday": "18:30",
-  *             "friday": "14:00",
-  *             "saturday": "09:30",
-  *             "sunday": "null",
-  *             "childId": 1
-  *           },
-  *           "chores": [
-  *             {
-  *               "id":3,
-  *               "title": "Clean your room",
-  *               "details": "Please clean your room nice and neat. Vaccuum it too!",
-  *               "date": "2016-12-24",
-  *               "completed": false,
-  *               "childId": 1
-  *             },
-  *             {
-  *               "id":4,
-  *               "title": "Wash the dishes",
-  *               "details": "Use the blue sponge under the sink.",
-  *               "date": "2016-12-24",
-  *               "completed": true,
-  *               "childId": 1
-  *             }
-  *           ],
+  *           "phone": "9990008888"
   *         },
   *         {
   *           "id": 2,
   *           "name": "Wendy",
-  *           "accountId": 1,
-  *           "chores": [],
-  *           "schedule": null
+  *           "phone": "1112223333"
   *         }
   *       ]
   *     }
@@ -258,14 +222,47 @@ const routes = (app, passport) => {
   /* /////// CHORES /////// */
 
   /**
-  * @api {get} /api/children
+  * @api {get} /api/children/:id/chores?startDate=2016-04-15&endDate=2016-12-09 Get today's chores
+  * @apiGroup Chores
   *
+  * @apiSuccessExample Success-Response:
   *
-  *
-  *
+  *     {
+  *       "child": {
+  *          "id": 1,
+  *          "name": "Winston",
+  *          "photo": "http://photo.jpg",
+  *          "phone": "9990008888",
+  *          "schedule": {
+  *             "monday": "null",
+  *             "tuesday": "12:30",
+  *             "wednesday": "14:05",
+  *             "thursday": "18:30",
+  *             "friday": "14:00",
+  *             "saturday": "09:30",
+  *             "sunday": "null"
+  *           },
+  *           "chores": [
+  *              {
+  *                 "id": 1,
+  *                 "title": "Clean your room",
+  *                 "details": "Vaccuum too!",
+  *                 "date": "2016-12-24",
+  *                 "completed": false
+  *              },
+  *              {
+  *                 "id": 2,
+  *                 "title": "Feed the dog",
+  *                 "details": "Don't leave the can open this time!",
+  *                 "date": "2016-04-01",
+  *                 "completed": true
+  *              }
+  *           ]
+  *         }
+  *     }
   *
   */
-  app.get('/api/children/:id/chores', auth(), ChoresController.readOneChildsChores);
+  app.get('/api/children/:id/chores', auth(), ChoresController.getChoresForDateRange);
 
 
   /**
@@ -366,10 +363,29 @@ const routes = (app, passport) => {
   /* /////// Schedule /////// */
 
   /**
-  * @api {get} /api/schedule Get schedule for a child
+  * @api {get} /api/children/:id/schedule Get schedule for a child
   * @apiGroup Schedule
+  *
+  * @apiSuccessExample Success-Response:
+  *     {
+  *         "child": {
+  *           "id": 1,
+  *           "schedule": {
+  *               "id": 1,
+  *               "monday": "null",
+  *               "tuesday": "12:30",
+  *               "wednesday": "14:05",
+  *               "thursday": "18:30",
+  *               "friday": "14:00",
+  *               "saturday": "09:30",
+  *               "sunday": "null",
+  *               "dateOfLastCheckin": "2016-06-19"
+  *             }
+  *         }
+  *     }
+  *
   */
-  app.get('/api/schedule', auth(), ScheduleController.read);
+  app.get('/api/children/:id/schedule', auth(), ScheduleController.read);
 
   /**
   * @api {post} /api/schedule Create schedule for a child
