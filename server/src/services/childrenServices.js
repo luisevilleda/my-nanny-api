@@ -73,7 +73,7 @@ const childrenServices = {
               reject('Child does not exist.');
             } else {
               childrenRepository.getDetailedInfoForOneChild(id, email)
-              .then(childInfo => resolve(JSON.stringify(childInfo)));
+              .then(childInfo => resolve({ child: childInfo }));
             }
           });
         }
