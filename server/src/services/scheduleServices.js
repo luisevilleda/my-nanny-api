@@ -32,7 +32,7 @@ const schedlueServices = {
                 if (!schedule) {
                   reject('Cannot get schedule, schedule does not exist.');
                 } else {
-                  resolve(schedule);
+                  resolve({ schedule });
                 }
               });
             }

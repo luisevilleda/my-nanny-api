@@ -158,9 +158,9 @@ const choresServices = {
       .then((chores) => {
         const startDate = req.query.startDate || '0000-00-00';
         const endDate = req.query.endDate || '9999-99-99';
-        const todaysChores = chores.filter(chore =>
+        const requestedChores = chores.filter(chore =>
           chore.date >= startDate && chore.date <= endDate);
-        resolve(todaysChores);
+        resolve({ chores: requestedChores });
         // reject('Dates provided not valid. Please provide startDate and endDate OR just date.');
       })
       .catch(err => reject(err));

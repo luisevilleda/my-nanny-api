@@ -89,26 +89,14 @@ const routes = (app, passport) => {
   *
   * @apiSuccessExample Success-Response:
   *
-  *    {
-  *       "account": {
-  *         "id": 1
-  *         "token": "1234",
-  *         "username": "Mary",
-  *         "amazonId": "999888777666",
-  *         "timeZone": "EST",
-  *         "phone": "1234567890",
-  *         "email": "mary@example.com"
-  *       },
-  *       "children": [
-  *         {
+  *   {
+  *       "child": {
   *           "id": 1,
   *           "name": "Winston",
   *           "accountId": 1,
   *           "phone": "2125241324"
-  *           }
-  *       ]
-  *     }
-  *
+  *       }
+  *   }
   *
   */
   app.get('/api/children/:id', auth(), ChildrenController.getChild);
@@ -123,6 +111,7 @@ const routes = (app, passport) => {
   *
   * @apiSuccessExample Success-Response:
   *
+  *   {
   *       "children": [
   *         {
   *           "id": 1,
@@ -139,7 +128,7 @@ const routes = (app, passport) => {
   *           "phone": "2129876543"
   *         }
   *       ]
-  *
+  *   }
   *
   */
   app.get('/api/children', auth(), ChildrenController.getChildren);
@@ -152,15 +141,13 @@ const routes = (app, passport) => {
   * @apiGroup Children
   *
   * @apiParamExample POST format:
-  *     {
-  *       "account": {
-  *         "amazonId": "999888777666"
-  *       },
+  *
+  *   {
   *       "child": {
   *         "name": "Winston",
   *         "phone": "8887776666"
   *       }
-  *     }
+  *    }
   *
   * @apiSuccess {String} Successfully added child.
   *
@@ -174,9 +161,6 @@ const routes = (app, passport) => {
   *
   * @apiParamExample PUT format:
   *     {
-  *       "account": {
-  *         "amazonId": "999888777666"
-  *       },
   *       "child": {
   *         "id": 3,
   *         "name": "Angus",
@@ -214,8 +198,11 @@ const routes = (app, passport) => {
 
   /**
   * @api {get} /api/children/:id/chores?startDate=2016-04-15&endDate=2016-12-09&page=1
-  *   Get today's chores, startDate AND/OR endDate, page is optional, 10 reuslts per request
+  * Get chores for a child
   * @apiGroup Chores
+  *
+  * @apiDescription Get today's chores,
+  * startDate AND/OR endDate, page is optional, 10 results per request
   *
   * @apiSuccessExample Success-Response:
   *
@@ -245,10 +232,7 @@ const routes = (app, passport) => {
   * @apiGroup Chores
   *
   * @apiParamExample POST format:
-  *     {
-  *       "account": {
-  *         "amazonId": "999888777666"
-  *       },
+  *   {
   *       "child": {
   *         "id": 1
   *       },
@@ -275,13 +259,10 @@ const routes = (app, passport) => {
   /**
   * @api {put} /api/chores Update chore(s) for a child
   * @apiGroup Chores
-  * @apiDescription Expects an array even if you are on;y updating 1 chore
+  * @apiDescription Expects an array even if you are only updating 1 chore
   *
   * @apiParamExample PUT format:
-  *     {
-  *       "account": {
-  *         "amazonId": "999888777666"
-  *       },
+  *
   *       "child": {
   *         "id": 1
   *       },
@@ -303,10 +284,7 @@ const routes = (app, passport) => {
   * @apiGroup Chores
   *
   * @apiParamExample DELETE format:
-  *     {
-  *       "account": {
-  *         "amazonId": "999888777666"
-  *       },
+  *
   *       "child": {
   *         "id": 1
   *       },
@@ -328,9 +306,8 @@ const routes = (app, passport) => {
   * @apiGroup Schedule
   *
   * @apiSuccessExample Success-Response:
-  *     {
-  *         "child": {
-  *           "id": 1,
+  *
+  *   {
   *           "schedule": {
   *               "id": 1,
   *               "monday": "null",
@@ -342,9 +319,8 @@ const routes = (app, passport) => {
   *               "sunday": "null",
   *               "dateOfLastCheckin": "2016-06-19"
   *             }
-  *         }
-  *     }
   *
+  *   }
   */
   app.get('/api/children/:id/schedule', auth(), ScheduleController.read);
 
