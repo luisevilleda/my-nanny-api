@@ -63,7 +63,7 @@ const childrenRepository = {
    */
 
 
-  findOneByIdEmail: (id, email) =>
+  findOneByIdEmail: (child, email) =>
     new Promise((resolve) => {
       Account.findOne({
         where: {
@@ -72,7 +72,7 @@ const childrenRepository = {
         include: [{
           model: Child,
           where: {
-            id,
+            id: child.id,
           },
         }],
       })
@@ -137,19 +137,19 @@ const childrenRepository = {
         include: [{
           model: Child,
           attributes: {
-            exclude: ['createdAt', 'updatedAt'],
-          }, 
+            exclude: ['createdAt', 'updatedAt', 'accountId'],
+          },
         }],
       })
     .then((foundAccount) => {
       if (foundAccount) {
-        resolve(foundAccount);
+        resolve({ children: foundAccount.children });
       } else {
         resolve(null);
       }
     })
     .catch(err => reject(err));
-  }),
+    }),
 
 
 /**
@@ -166,23 +166,9 @@ const childrenRepository = {
           id,
         },
         attributes: {
-          exclude: ['createdAt', 'updatedAt'],
+          exclude: ['createdAt', 'updatedAt', 'accountId'],
         },
-        include: [
-            {
-              model: Schedule,
-              attributes: {
-                exclude: ['createdAt', 'updatedAt'],
-              },
-            },
-            {
-              model: Chore,
-              attributes: {
-                exclude: ['createdAt', 'updatedAt'],
-              },
-            },
-          ],
-        })
+      })
       .then((child) => {
         if (child) {
           resolve(child);

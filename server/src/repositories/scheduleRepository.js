@@ -69,6 +69,41 @@ const scheduleRepository = {
       .catch(err => console.log('ERROR finding schedule', err));
     }),
 
+  /**
+      * @function getScheduleForOneChild
+      * @desc Gets basic details (name, phone) for all account's children
+      * @param {string} email - The email of the account
+      * @returns {promise} promise - Resolves to array of children or []
+     */
+
+  getScheduleForOneChild: ({ id }, email) =>
+    new Promise((resolve) => {
+      Child.findOne({
+        where: {
+          id,
+        },
+        attributes: {
+          exclude: ['createdAt', 'updatedAt', 'accountId'],
+        },
+        include: [
+          {
+            model: Schedule,
+            attributes: {
+              exclude: ['createdAt', 'updatedAt', 'childId'],
+            },
+          },
+        ],
+      })
+      .then((child) => {
+        if (child) {
+          resolve(child.schedule);
+        } else {
+          resolve(null);
+        }
+      })
+      .catch(err => console.log(err));
+    }),
+
 };
 
 export default scheduleRepository;

@@ -27,13 +27,6 @@ const ChoresController = {
     .catch(err => res.status(500).send(err));
   },
 
-  readOneChildsChores: (req, res) => {
-    // console.log('REQ PARAMS: ', req.user.emails[0].value);
-    choresServices.readOneChildsChores(req.body, req.user.emails[0].value)
-    .then(status => res.send(status))
-    .catch(err => res.status(500).send(err));
-  },
-
   getChoresForDateRange: (req, res) => {
     choresServices.getChoresForDateRange(req, req.user.emails[0].value)
     .then(status => res.send(status))

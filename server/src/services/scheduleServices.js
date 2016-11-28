@@ -25,25 +25,14 @@ const schedlueServices = {
           childrenRepository.findOneByIdEmail({ id: req.params.id }, email)
           .then((child) => {
             if (!child) {
-              reject('Cannot update schedule, child does not exist');
+              reject('Cannot get schedule, child does not exist');
             } else {
-              scheduleRepository.findScheduleIfExists({ id: req.params.id }, email)
+              scheduleRepository.getScheduleForOneChild({ id: req.params.id }, email)
               .then((schedule) => {
                 if (!schedule) {
-                  reject('Cannot update schedule, schedule does not exist.');
+                  reject('Cannot get schedule, schedule does not exist.');
                 } else {
-                  const scheduleToSend = JSON.parse(JSON.stringify(schedule));
-                  delete scheduleToSend.childId;
-                  delete scheduleToSend.createdAt;
-                  delete scheduleToSend.updatedAt;
-                  delete scheduleToSend.childId;
-                  const responseObj = {
-                    child: {
-                      id: req.params.id,
-                      schedule: scheduleToSend,
-                    },
-                  };
-                  resolve(responseObj);
+                  resolve(schedule);
                 }
               });
             }
