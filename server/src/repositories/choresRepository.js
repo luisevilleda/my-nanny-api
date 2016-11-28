@@ -51,16 +51,20 @@ const choresRepository = {
 
   save: chore => chore.save(),
 
-  getChoresForChildById: ({ id }) =>
+  getChoresForChildById: ({ id }, page = 1) =>
     new Promise((resolve, reject) => {
+      const limit = 10;
+      const offset = (page - 1) * limit;
       Chore.findAll({
         where: {
           childId: id,
         },
+        limit,
+        offset,
       })
       .then((chores) => {
         if (!chores.length) {
-          reject('No chores found for this childId.');
+          resolve([]);
         } else {
           resolve(chores);
         }

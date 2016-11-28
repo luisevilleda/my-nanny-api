@@ -123,31 +123,22 @@ const routes = (app, passport) => {
   *
   * @apiSuccessExample Success-Response:
   *
-  *    {
-  *       "account": {
-  *         "id": 1
-  *         "token": "1234",
-  *         "username": "Mary",
-  *         "amazonId": "999888777666",
-  *         "timeZone": "EST",
-  *         "phone": "1234567890",
-  *         "email": "mary@example.com"
-  *       },
   *       "children": [
   *         {
   *           "id": 1,
   *           "name": "Winston",
+  *           "photo": "http://image.com/",
   *           "accountId": 1,
   *           "phone": "2125241324"
   *           },
   *         {
   *           "id": 2,
   *           "name": "Wendy",
+  *           "photo": null,
   *           "accountId": 1,
   *           "phone": "2129876543"
   *         }
   *       ]
-  *     }
   *
   *
   */
@@ -222,26 +213,12 @@ const routes = (app, passport) => {
   /* /////// CHORES /////// */
 
   /**
-  * @api {get} /api/children/:id/chores?startDate=2016-04-15&endDate=2016-12-09 Get today's chores
+  * @api {get} /api/children/:id/chores?startDate=2016-04-15&endDate=2016-12-09&page=1
+  *   Get today's chores, startDate AND/OR endDate, page is optional, 10 reuslts per request
   * @apiGroup Chores
   *
   * @apiSuccessExample Success-Response:
   *
-  *     {
-  *       "child": {
-  *          "id": 1,
-  *          "name": "Winston",
-  *          "photo": "http://photo.jpg",
-  *          "phone": "9990008888",
-  *          "schedule": {
-  *             "monday": "null",
-  *             "tuesday": "12:30",
-  *             "wednesday": "14:05",
-  *             "thursday": "18:30",
-  *             "friday": "14:00",
-  *             "saturday": "09:30",
-  *             "sunday": "null"
-  *           },
   *           "chores": [
   *              {
   *                 "id": 1,
@@ -258,26 +235,10 @@ const routes = (app, passport) => {
   *                 "completed": true
   *              }
   *           ]
-  *         }
-  *     }
   *
   */
   app.get('/api/children/:id/chores', auth(), ChoresController.getChoresForDateRange);
 
-
-  /**
-  * @api {get} /api/chores Get all chores for a child
-  * @apiGroup Chores
-  *
-  */
-  app.get('/api/chores', auth(), ChoresController.readAll);
-
-  /**
-  * @api {get} /api/chores/:id Get a specific chore?
-  * @apiGroup Chores
-  *
-  */
-  app.get('/api/chores/:id', auth(), ChoresController.read);
 
   /**
   * @api {post} /api/chores Add Chores to a Child

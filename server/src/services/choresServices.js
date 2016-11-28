@@ -11,7 +11,7 @@ import scheduleRepository from '../repositories/scheduleRepository';
 import curfewsRepository from '../repositories/curfewsRepository';
 import db from '../connection';
 
-const readOneChildsChores = (childId, email) =>
+const readOneChildsChores = (childId, email, page) =>
   new Promise((resolve, reject) => {
     // Check if account exists
     accountRepository.findAccountByEmail(email)
@@ -27,7 +27,7 @@ const readOneChildsChores = (childId, email) =>
             reject('Cannot get chores, child does not exist.');
           } else {
             // Get all of the chores for the child model
-            choresRepository.getChoresForChildById(child)
+            choresRepository.getChoresForChildById(child, page)
             .then((chores) => {
               resolve(chores);
             });
@@ -154,11 +154,10 @@ const choresServices = {
 
   getChoresForDateRange: (req, email) =>
     new Promise((resolve, reject) => {
-      readOneChildsChores(req.params.id, email)
+      readOneChildsChores(req.params.id, email, req.query.page)
       .then((chores) => {
         const startDate = req.query.startDate || '0000-00-00';
         const endDate = req.query.endDate || '9999-99-99';
-        console.log(startDate, endDate);
         const todaysChores = chores.filter(chore =>
           chore.date >= startDate && chore.date <= endDate);
         resolve(todaysChores);

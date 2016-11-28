@@ -145,35 +145,6 @@ const accountRepository = {
       .catch(err => reject(err));
     }),
 
-  getAccountAndChildren: email =>
-    new Promise((resolve, reject) => {
-      Account.findOne({
-        where: {
-          email,
-        },
-        attributes:
-        ['username',
-          'email',
-          'timezone',
-          'phone'],
-        include: [{
-          model: Child,
-          attributes:
-          ['id',
-            'name',
-            'phone'],
-        }],
-      })
-      .then((accountInfo) => {
-        if (accountInfo) {
-          resolve(accountInfo);
-        } else {
-          resolve(null);
-        }
-      })
-      .catch(err => reject(err));
-    }),
-
 };
 
 export default accountRepository;

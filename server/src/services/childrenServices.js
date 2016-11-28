@@ -56,7 +56,7 @@ const childrenServices = {
           childrenRepository.getBasicInfoForAllChildren(email)
           .then(childrenInfo => resolve(JSON.stringify(childrenInfo)));
         }
-      })
+      });
     }),
 
 
@@ -67,7 +67,7 @@ const childrenServices = {
         if (!account) {
           reject('Failed to get info, account does not exist.');
         } else {
-          childrenRepository.findOneByIdEmail(id, email)
+          childrenRepository.findOneByIdEmail({ id }, email)
           .then((child) => {
             if (!child) {
               reject('Child does not exist.');
