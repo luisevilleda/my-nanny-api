@@ -9,19 +9,13 @@ import Chore from '../models/choreModel';
 const accountRepository = {
   /**
     * @function create
-    * @param {object} data
-    * @param data.username - The username for the account
-    * @param data.token - Account's phone number
-    * @param data.timeZone - Account's timeZone
-    * @param data.phone - Account's phone number
-    * @param data.email - Account's email
+    * @param {object} data - An object with new account info
+    * @param data.username - The username from Amazon OAuth
+    * @param email - The account's email from Amazon OAuth
   */
-  create: function createaccount({ username, token, timeZone, phone }, email) {
+  create: function createaccount({ username }, email) {
     return Account.build({
       username,
-      token,
-      timeZone,
-      phone,
       email,
     });
   },
@@ -52,7 +46,7 @@ const accountRepository = {
 
   /**
     * @function findAccountByEmail
-    * @param {string} email - The email of the account
+    * @param {string} email - The email associated with the account
    */
   findAccountByEmail: email =>
     Account.findOne({ where: { email } }),

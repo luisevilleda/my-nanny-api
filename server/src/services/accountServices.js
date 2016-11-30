@@ -16,12 +16,9 @@ const accountServices = {
   /**
     * @function createNewAccount
     * @param {object} data - An object with new account info
-    * @param {string} data.account.username
-    * @param {string} data.account.token - The token given my Amazon's OAuth
-    * @param {string} email - The account's email that comes from the Amazon token
-    * @param {string} data.account.timeZone
-    * @param {object} data.account.phone
-    * @param {object} data.account.email
+    * @param {string} data.account.username - The persons full name from Amazon OAuth
+    * @param {object} data.account.email - The account's email that comes from Amazon OAuth
+    * @param {string} email - The account's email that comes from Amazon OAuth
     * @returns {promise}
    */
   createNewAccount: (data, email) =>
@@ -33,9 +30,11 @@ const accountServices = {
           reject('Failed to create account.');
         } else {
           const newAccount = accountRepository.create(data.account, email);
-          newAccount.save();
-          const { id, username, token } = newAccount;
-          resolve(JSON.stringify({ id, username, token }));
+          newAccount.save()
+          .then(() => {
+            const { id, username, token } = newAccount;
+            resolve(JSON.stringify({ id, username, token }));
+          });
         }
       });
     }),
