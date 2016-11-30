@@ -6,17 +6,17 @@ import Schedule from './models/scheduleModel';
 import Curfew from './models/curfewModel';
 
 const initializeModels = () => {
-  Child.belongsTo(Account);
-  Account.hasMany(Child);
+  Child.belongsTo(Account, { onDelete: 'CASCADE' });
+  Account.hasMany(Child, { onDelete: 'CASCADE' });
 
-  Chore.belongsTo(Child);
-  Child.hasMany(Chore);
+  Chore.belongsTo(Child, { onDelete: 'CASCADE' });
+  Child.hasMany(Chore, { onDelete: 'CASCADE' });
 
-  Schedule.belongsTo(Child);
-  Child.hasOne(Schedule);
+  Schedule.belongsTo(Child, { onDelete: 'CASCADE' });
+  Child.hasOne(Schedule, { onDelete: 'CASCADE' });
 
-  Curfew.belongsTo(Schedule);
-  Schedule.hasMany(Curfew);
+  Curfew.belongsTo(Schedule, { onDelete: 'CASCADE' });
+  Schedule.hasMany(Curfew, { onDelete: 'CASCADE' });
 };
 
 // Build the models
