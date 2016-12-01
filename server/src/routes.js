@@ -175,20 +175,17 @@ const routes = (app, passport) => {
   app.put('/api/children', auth(), ChildrenController.updateChild);
 
   /**
-  * @api {put} /api/children Delete a child
+  * @api {delete} /api/children Delete a child
   * @apiGroup Children
   *
   * @apiParamExample DELETE format:
   *     {
-  *       "account": {
-  *         "amazonId": "999888777666"
-  *       },
   *       "child": {
   *         "id": 3
   *       }
   *     }
   *
-  * @apiSuccess {String} Successfully updated child.
+  * @apiSuccess {String} Successfully deleted child.
   *
   * @apiError Failed to update child.
   */

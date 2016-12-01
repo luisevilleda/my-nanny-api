@@ -1,5 +1,7 @@
 import Sequelize from 'sequelize';
-import db from '../connection';
+import { connectDb } from '../connection';
+
+const db = connectDb();
 
 const Child = db.define('child', {
   name: Sequelize.STRING,

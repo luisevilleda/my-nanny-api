@@ -1,5 +1,7 @@
 import Sequelize from 'sequelize';
-import db from '../connection';
+import { connectDb } from '../connection';
+
+const db = connectDb();
 
 const Schedule = db.define('schedule', {
   sunday: Sequelize.STRING,
