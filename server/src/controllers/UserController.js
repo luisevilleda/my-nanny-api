@@ -2,15 +2,6 @@ import Promise from 'bluebird';
 import accountServices from '../services/accountServices';
 
 const UserController = {
-  login: (req, res) => {
-    accountServices.login(req.body, req.user.emails[0].value)
-    .then(status => res.send(status))
-    .catch(err => res.status(500).send(err));
-  },
-
-  logout: (req, res) => {
-    res.send('User logout is not implemented yet');
-  },
 
   create: (pseudoBody, email) =>
     new Promise(resolve =>

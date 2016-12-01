@@ -10,19 +10,6 @@ const routes = (app, passport) => {
   /* /////// DOCS /////// */
   app.get('/', (req, res) => res.render('index', { title: 'my-nanny docs' }));
 
-  /* /////// AUTH /////// */
-
-  /**
-  * @api {post} /logout Logout
-  * @apiGroup Auth
-  *
-  *
-  * @apiSuccess {String} Successfully logged out.
-  *
-  * @apiError Failed to log out.
-  */
-  app.post('/logout', UserController.logout);
-
   /* /////// ACCOUNT /////// */
 
   /**
@@ -32,11 +19,9 @@ const routes = (app, passport) => {
   * @apiParamExample PUT format:
   *     {
   *       "account": {
-  *         "amazonId": "999888777666",
   *         "username": "George",
   *         "timezone": "EST",
   *         "phone": "9990009999",
-  *         "email": "george@anotherExample.com"
   *       }
   *     }
   *

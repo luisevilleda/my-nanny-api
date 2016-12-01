@@ -39,10 +39,10 @@
     "passport-amazon-token": "^2.1.0",
     "request": "^2.78.0",
     "sequelize": "^3.25.0",
-    "sinon": "^1.17.6"
+    "sinon": "^1.17.6",
+    "chai": "^3.5.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
     "eslint": "^3.9.1",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.2.0",

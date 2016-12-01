@@ -117,7 +117,8 @@ const accountRepository = {
           email,
         },
         attributes:
-        ['username',
+        ['id',
+          'username',
           'email',
           'timezone',
           'phone'],
