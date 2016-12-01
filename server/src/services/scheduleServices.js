@@ -16,7 +16,7 @@ const schedlueServices = {
   read: (req, email) =>
     new Promise((resolve, reject) => {
       // Check if the account exists
-      accountRepository.findAccountByEmail(email)
+      accountRepository.findByEmail(email)
       .then((account) => {
         if (!account) {
           reject('Cannot get schedule, account does not exist.');
@@ -62,7 +62,7 @@ const schedlueServices = {
   create: (data, email) =>
     new Promise((resolve, reject) => {
       // Check if the account exists
-      accountRepository.findAccountByEmail(email)
+      accountRepository.findByEmail(email)
       .then((account) => {
         if (!account) {
           reject('Cannot add schedule, account does not exist.');
@@ -94,7 +94,7 @@ const schedlueServices = {
   update: (data, email) =>
     new Promise((resolve, reject) => {
       // Check if the account exists
-      accountRepository.findAccountByEmail(email)
+      accountRepository.findByEmail(email)
       .then((account) => {
         if (!account) {
           reject('Cannot update schedule, account does not exist.');

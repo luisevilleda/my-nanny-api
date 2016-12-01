@@ -5,7 +5,7 @@ const UserController = {
 
   create: (pseudoBody, email) =>
     new Promise(resolve =>
-      accountServices.createNewAccount(pseudoBody, email)
+      accountServices.create(pseudoBody, email)
       .then(status => resolve(true))
       // We don't care if there was a failure making the account
         // It will fail if the account already exists
@@ -16,13 +16,13 @@ const UserController = {
       .catch(err => resolve(false))),
 
   updateAccount: (req, res) => {
-    accountServices.updateAccount(req.body, req.user.emails[0].value)
+    accountServices.update(req.body, req.user.emails[0].value)
     .then(status => res.send(status))
     .catch(err => res.status(500).send(err));
   },
 
   getInfo: (req, res) => {
-    accountServices.getAccountInfo(req.body, req.user.emails[0].value)
+    accountServices.read(req.body, req.user.emails[0].value)
     .then(data => res.send(data))
     .catch(err => res.status(500).send(err));
   },

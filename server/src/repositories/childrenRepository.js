@@ -1,7 +1,5 @@
 import Child from '../models/childModel';
 import Account from '../models/accountModel';
-import Schedule from '../models/scheduleModel';
-import Chore from '../models/choreModel';
 
 /**
   * @module Repository: Child
@@ -178,36 +176,6 @@ const childrenRepository = {
       })
       .catch(err => console.log(err));
     }),
-
-
-  /**
-    * @function getDetailedInfoForAllChildren
-    * @desc Gets all information for all account's children
-    * @param {string} email - The email of the account
-    * @returns {promise} promise - Resolves to array of children or []
-  */
-
-  // getDetailedInfoForAllChildren: email =>
-  //   new Promise((resolve, reject) => {
-  //     Account.findOne({
-  //       where: {
-  //         email,
-  //       },
-  //       include: [{
-  //         model: Child,
-  //         include: [Schedule, Chore],
-  //       }],
-  //     })
-  //     .then((foundAccount) => {
-  //       if (foundAccount) {
-  //         resolve(foundAccount.children);
-  //       } else {
-  //         resolve(null);
-  //       }
-  //     })
-  //     .catch(err => reject(err));
-  //   }),
-
 
   /**
     * @function findAccountByEmail

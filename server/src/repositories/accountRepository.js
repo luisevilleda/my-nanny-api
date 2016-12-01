@@ -1,7 +1,5 @@
 import Account from '../models/accountModel';
 import Child from '../models/childModel';
-import Schedule from '../models/scheduleModel';
-import Chore from '../models/choreModel';
 
 /**
   * @module Repository: Account
@@ -10,7 +8,7 @@ const accountRepository = {
   /**
     * @function create
     * @param {object} data - An object with new account info
-    * @param data.username - The username from Amazon OAuth
+    * @param data.username - The username, usually a full name, from Amazon OAuth
     * @param email - The account's email from Amazon OAuth
   */
   create: function createaccount({ username }, email) {
@@ -21,96 +19,30 @@ const accountRepository = {
   },
 
   /**
-    * @function update
-    * @param {object} account - Instance of a account from the db
-    * @param {object} changedAttributes - Obj with the keys and attributes to be updated
-  */
-  update: (account, changedAttributes) => {
-    account.update(changedAttributes)
-    .then((res) => {
-      console.log('Account successfully updated');
-      return res;
-    });
-  },
-
-  destroy: account => account.destroy(),
-
-  save: account => account.save(),
-
-  /**
-    * @function findAccountByAmazonId
-    * @param {string} amazonId - The amazonId of the account
+    * @function findByEmail
+    * @param {string} email - The email given by Amazon OAuth associated with the account
    */
-  findAccountByAmazonId: amazonId =>
-    Account.findOne({ where: { amazonId } }),
-
-  /**
-    * @function findAccountByEmail
-    * @param {string} email - The email associated with the account
-   */
-  findAccountByEmail: email =>
+  findByEmail: email =>
     Account.findOne({ where: { email } }),
 
   /**
-    * @function findAccountByPhone
-    * @param {string} phone - The phone number of the account
+   * @typedef {Object} returnedAccountInfo
+   * @property {object} account
+   * @property {number} account.id - The account's id given by Sequelize
+   * @property {string} account.username
+   * @property {string} account.email - The email given by Amazon OAuth
+   * @property {string} account.phone
+   * @property {string} account.timezone
+   * @property {array} account.children - An array of children
+   * @property {string} account.children.name
+   * @property {string} account.children.phone
    */
-  findAccountByPhone: phone =>
-    Account.findOne({ where: { phone } }),
-
   /**
-    * @function findAccountByUsername
-    * @param {string} username - The username of the account
-  */
-  findAccountByUsername: username =>
-    Account.findOne({ where: { username } }),
-
-  /**
-    * @function getAllAccountInfo
-    * @param {string} email - The email of the account
-    * @returns {object} - An object containing all relevant account info
-  */
-  getAllAccountInfo: email =>
-    new Promise((resolve, reject) => {
-      Account.findOne({
-        where: {
-          email,
-        },
-        attributes: {
-          exclude: ['createdAt', 'updatedAt'],
-        },
-        include: [{
-          model: Child,
-          attributes: {
-            exclude: ['createdAt', 'updatedAt'],
-          },
-          include: [
-            {
-              model: Schedule,
-              attributes: {
-                exclude: ['createdAt', 'updatedAt'],
-              },
-            },
-            {
-              model: Chore,
-              attributes: {
-                exclude: ['createdAt', 'updatedAt'],
-              },
-            },
-          ],
-        }],
-      })
-      .then((foundAccount) => {
-        if (foundAccount) {
-          resolve(foundAccount);
-        } else {
-          resolve(null);
-        }
-      })
-      .catch(err => reject(err));
-    }),
-
-  getAccountAndChildren: email =>
+    * @function read
+    * @param {string} email - The email given by Amazon OAuth associated with the account
+    * @returns {returnedAccountInfo} - Resolves to a stringified object
+   */
+  read: email =>
     new Promise((resolve, reject) => {
       Account.findOne({
         where: {
@@ -139,7 +71,6 @@ const accountRepository = {
       })
       .catch(err => reject(err));
     }),
-
 };
 
 export default accountRepository;

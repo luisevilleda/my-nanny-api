@@ -14,7 +14,7 @@ import db from '../connection';
 const readOneChildsChores = (childId, email, page) =>
   new Promise((resolve, reject) => {
     // Check if account exists
-    accountRepository.findAccountByEmail(email)
+    accountRepository.findByEmail(email)
     .then((account) => {
       if (!account) {
         reject('Cannot get chores, account does not exist.');
@@ -55,7 +55,7 @@ const choresServices = {
   */
   create: (data, email) =>
     new Promise((resolve, reject) => {
-      accountRepository.findAccountByEmail(email)
+      accountRepository.findByEmail(email)
       .then((account) => {
         if (!account) {
           reject('Cannot add chore, account does not exist.');
@@ -87,7 +87,7 @@ const choresServices = {
   update: (data, email) =>
     new Promise((resolve, reject) => {
       // Check if account exists
-      accountRepository.findAccountByEmail(email)
+      accountRepository.findByEmail(email)
       .then((account) => {
         if (!account) {
           reject('Cannot update chore, account does not exist.');
@@ -120,7 +120,7 @@ const choresServices = {
   destroy: (data, email) =>
     new Promise((resolve, reject) => {
       // Check if account exists
-      accountRepository.findAccountByEmail(email)
+      accountRepository.findByEmail(email)
       .then((account) => {
         if (!account) {
           reject('Cannot destroy chore, account does not exist.');
