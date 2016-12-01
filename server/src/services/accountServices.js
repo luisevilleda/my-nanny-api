@@ -40,31 +40,14 @@ const accountServices = {
     }),
 
   /**
-    * @function login
-    * @param {object} data - Contains an account
-    * @param {string} email
-    * @returns {promise} - Resolves to the user's account info
-  */
-  login: (data, email) =>
-    new Promise((resolve, reject) => {
-      accountRepository.findAccountByEmail(email)
-      .then((account) => {
-        if (!account) {
-          // If account does not exist, login fails
-          reject('Failed to log in.');
-        } else {
-          // send them all the info for the account
-          accountRepository.getAllAccountInfo(email)
-          .then(accountInfo => resolve(JSON.stringify(accountInfo)));
-        }
-      });
-    }),
-
-  /**
     * @function updateAccount
-    * @param {object} data - Contains an account
-    * @param {string} email
-    * @param {object} data.account
+    * @desc Any other params sent in will be ignored, you can't update email
+    * @param {object} data - Contains an account object
+    * @param {object} data.account - Contains an account info to update
+    * @param {string} data.account.username - Optional updated username
+    * @param {string} data.account.timezone - Optional updated timezone
+    * @param {string} data.account.phone - Optional updated phone number
+    * @param {string} email - The email that comes from Amazon Oath
     * @returns {promise}
   */
   updateAccount: (data, email) =>
@@ -74,15 +57,12 @@ const accountServices = {
         if (!account) {
           reject('Cannot update account. Account doesn\'t exist');
         } else {
-          // Strip amazonId from the data.account object
-            // So that they can't update that part of it
-            // This doesn't provide protection without amazon actually
-            // Authenticating who the user is
-          const updatedAccount = data.account;
-          delete updatedAccount.amazonId;
+          // Unable to update email because that is the basis
+            // The account info is based on
+          const updatedAccount = data.account || {};
           delete updatedAccount.email;
-          account.updateAttributes(data.account);
-          resolve('Account updated successfully.');
+          account.updateAttributes(updatedAccount)
+          .then(() => resolve('Account updated successfully.'));
         }
       });
     }),
