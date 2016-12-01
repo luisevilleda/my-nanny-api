@@ -5,14 +5,16 @@ import session from 'express-session';
 import path from 'path';
 import passport from 'passport';
 import AmazonTokenStrategy from 'passport-amazon-token';
-// import { Strategy } from 'passport-amazon';
 import routes from './routes';
 import config from './config';
 import UserController from './controllers/UserController';
 
-// These imports start the connection and model relationships
-import connection from './connection';
+import { connectDb, authenticateDb } from './connection';
 import initializeSchemas from './initializeSchemas';
+
+const db = connectDb();
+authenticateDb(db)
+.then(() => initializeSchemas());
 
 // PASSPORT
 passport.use(new AmazonTokenStrategy(

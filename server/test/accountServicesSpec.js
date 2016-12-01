@@ -5,8 +5,8 @@ import mysql from 'mysql';
 import request from 'request';
 import chai from 'chai';
 import config from '../src/config';
-import connection from '../src/connection';
-import initializeModels from '../src/initializeSchemas';
+import { connectDb, authenticateDb } from '../src/connection';
+import initializeSchemas from '../src/initializeSchemas';
 
 import accountServices from '../src/services/accountServices';
 import Account from '../src/models/accountModel';
@@ -15,28 +15,23 @@ import Chore from '../src/models/choreModel';
 import Schedule from '../src/models/scheduleModel';
 
 
-
+let connection = null;
 const expect = chai.expect;
 
 describe('accountServices', () => {
   // let dbConnection;
-
   before((done) => {
-    // The timeout is necessary because the
-    // import initializeModels takes forever to sync models
-
-    setTimeout(() => {
-      connection.sync({ force: true })
-      .then(() => {
-        console.log('finished sync');
-        done();
-      });
-    }, 500);
+    connection = connectDb();
+    done();
   });
 
   beforeEach((done) => {
-    Account.destroy({ where: {} })
-    .then(() => done());
+    connection.sync()
+    .then((results) => {
+      Account.destroy({ where: {} })
+      .then(() => done())
+      .catch(err => console.log('ERROR: ', err.sql));
+    });
   });
 
   // afterEach(() => dbConnection.end());
