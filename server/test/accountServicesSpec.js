@@ -12,9 +12,8 @@ describe('Test accountServices', () => {
   });
 
   describe('Account Creation', () => {
-
     it('Should create an Account when a new req.user email comes in', (done) => {
-      accountServices.createNewAccount({
+      accountServices.create({
         account: {
           username: 'John Doe',
           email: 'john@test.com',
@@ -32,14 +31,14 @@ describe('Test accountServices', () => {
     });
 
     it('Should not create a new account if the email is already in use', (done) => {
-      accountServices.createNewAccount({
+      accountServices.create({
         account: {
           username: 'John Doe',
           email: 'john@test.com',
         },
       }, 'john@test.com')
       .then(() =>
-        accountServices.createNewAccount({
+        accountServices.create({
           account: {
             username: 'John Doe',
             email: 'john@test.com',
@@ -57,14 +56,14 @@ describe('Test accountServices', () => {
     });
 
     it('Should create another new account if the email is not use', (done) => {
-      accountServices.createNewAccount({
+      accountServices.create({
         account: {
           username: 'John Doe',
           email: 'john@test.com',
         },
       }, 'john@test.com')
       .then(() =>
-        accountServices.createNewAccount({
+        accountServices.create({
           account: {
             username: 'Mary Jane',
             email: 'mary@test.com',
@@ -86,7 +85,7 @@ describe('Test accountServices', () => {
     // Before only this block of tests
       // Create a test account to work with
     beforeEach((done) => {
-      accountServices.createNewAccount({
+      accountServices.create({
         account: {
           username: 'John Doe',
           email: 'john@test.com',
@@ -97,7 +96,7 @@ describe('Test accountServices', () => {
     });
 
     it('Should update an account\'s information', (done) => {
-      accountServices.updateAccount({
+      accountServices.update({
         account: {
           username: 'Barry Allen',
           timezone: 'EST',
@@ -119,7 +118,7 @@ describe('Test accountServices', () => {
     });
 
     it('Should not update an account\'s email if passed in a new one', (done) => {
-      accountServices.updateAccount({
+      accountServices.update({
         account: {
           email: 'barry@test.com',
         },
@@ -136,7 +135,7 @@ describe('Test accountServices', () => {
     });
 
     it('Should not update any accounts if the account does not exist', (done) => {
-      accountServices.updateAccount({
+      accountServices.update({
         account: {
           username: 'maliciousUser',
         },
@@ -151,7 +150,7 @@ describe('Test accountServices', () => {
     });
 
     it('Should not update the account for malformed data passed in', (done) => {
-      accountServices.updateAccount({
+      accountServices.update({
         badData: {
           username: 'bad-data',
           account: {
@@ -170,7 +169,7 @@ describe('Test accountServices', () => {
     });
 
     it('Should not update the account for an empty body', (done) => {
-      accountServices.updateAccount({}, 'john@test.com')
+      accountServices.update({}, 'john@test.com')
       .then(() => {
         Account.findAll({ where: {} })
         .then((results) => {
@@ -187,13 +186,13 @@ describe('Test accountServices', () => {
   describe('Account Info Retrieval', () => {
     // Create a new account and fill in blank fields
     beforeEach((done) => {
-      accountServices.createNewAccount({
+      accountServices.create({
         account: {
           username: 'John Doe',
           email: 'john@test.com',
         },
       }, 'john@test.com')
-      .then(() => accountServices.updateAccount({
+      .then(() => accountServices.update({
         account: {
           phone: '1112223333',
           timezone: 'EST',
@@ -204,7 +203,7 @@ describe('Test accountServices', () => {
     });
 
     it('Should retrieve account info we put in based on Amazon OAuth email as a string', (done) => {
-      accountServices.getAccountInfo({}, 'john@test.com')
+      accountServices.read({}, 'john@test.com')
       .then((account) => {
         expect(account).to.be.a('string');
 
@@ -218,7 +217,7 @@ describe('Test accountServices', () => {
     });
 
     it('Should retrieve account info with id that Sequelize added automatically', (done) => {
-      accountServices.getAccountInfo({}, 'john@test.com')
+      accountServices.read({}, 'john@test.com')
       .then((account) => {
         const parsedAccount = JSON.parse(account);
         expect(parsedAccount.id).to.be.a('number');
@@ -227,7 +226,7 @@ describe('Test accountServices', () => {
     });
 
     it('Should retrieve account info with an array of children', (done) => {
-      accountServices.getAccountInfo({}, 'john@test.com')
+      accountServices.read({}, 'john@test.com')
       .then((account) => {
         const parsedAccount = JSON.parse(account);
         expect(parsedAccount.children).to.be.an('array');
@@ -236,7 +235,7 @@ describe('Test accountServices', () => {
     });
 
     it('Should catch an error with a string if an incorrect email is given', (done) => {
-      accountServices.getAccountInfo({}, 'badEmail@test.com')
+      accountServices.read({}, 'badEmail@test.com')
       .catch((error) => {
         expect(error).to.be.a('string');
         done();

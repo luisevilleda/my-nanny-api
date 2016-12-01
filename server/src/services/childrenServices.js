@@ -1,15 +1,6 @@
 import Promise from 'bluebird';
-import Account from '../models/accountModel';
-import Child from '../models/childModel';
-import Chore from '../models/choreModel';
-import Schedule from '../models/scheduleModel';
-import Curfew from '../models/curfewModel';
 import accountRepository from '../repositories/accountRepository';
 import childrenRepository from '../repositories/childrenRepository';
-import choresRepository from '../repositories/choresRepository';
-import scheduleRepository from '../repositories/scheduleRepository';
-import curfewsRepository from '../repositories/curfewsRepository';
-import db from '../connection';
 
 /** @module Services: Children */
 const childrenServices = {
@@ -25,7 +16,11 @@ const childrenServices = {
   */
   addChild: (data, email) =>
     new Promise((resolve, reject) => {
-      accountRepository.findAccountByEmail(email)
+      if (!data.child || !data.child.name || !data.child.phone) {
+        reject('Cannot add child, child data is missing');
+        return;
+      }
+      accountRepository.findByEmail(email)
       .then((account) => {
         if (!account) {
           reject('Cannot add child, account does not exist.');
@@ -37,8 +32,8 @@ const childrenServices = {
             } else {
               const newChild = childrenRepository.create(account, data.child);
               newChild.save()
-              .then(() => account.addChild(newChild));
-              resolve('Child successfully added.');
+              .then(() => account.addChild(newChild))
+              .then(() => resolve('Child successfully added.'));
             }
           });
         }
@@ -48,7 +43,7 @@ const childrenServices = {
 
   getChildren: (data, email) =>
     new Promise((resolve, reject) => {
-      accountRepository.findAccountByEmail(email)
+      accountRepository.findByEmail(email)
       .then((account) => {
         if (!account) {
           reject('Failed to get info, account does not exist.');
@@ -62,7 +57,7 @@ const childrenServices = {
 
   getChild: (data, email, id) =>
     new Promise((resolve, reject) => {
-      accountRepository.findAccountByEmail(email)
+      accountRepository.findByEmail(email)
       .then((account) => {
         if (!account) {
           reject('Failed to get info, account does not exist.');
@@ -92,7 +87,7 @@ const childrenServices = {
   */
   updateChild: (data, email) =>
   new Promise((resolve, reject) => {
-    accountRepository.findAccountByEmail(email)
+    accountRepository.findByEmail(email)
       .then((account) => {
         if (!account) {
           reject('Cannot edit child, account does not exist.');
@@ -119,7 +114,7 @@ const childrenServices = {
   */
   deleteChild: (data, email) =>
   new Promise((resolve, reject) => {
-    accountRepository.findAccountByEmail(email)
+    accountRepository.findByEmail(email)
       .then((account) => {
         if (!account) {
           reject('Cannot delete child, account does not exist.');
