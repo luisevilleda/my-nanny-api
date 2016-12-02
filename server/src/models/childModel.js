@@ -1,8 +1,12 @@
-const Sequelize = require('sequelize');
-const db = require('../connection');
+import Sequelize from 'sequelize';
+import { connectDb } from '../connection';
+
+const db = connectDb();
 
 const Child = db.define('child', {
   name: Sequelize.STRING,
+  phone: Sequelize.STRING,
+  photo: Sequelize.STRING,
 });
 
-module.exports = Child;
+export default Child;

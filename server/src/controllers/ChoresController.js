@@ -1,23 +1,38 @@
+import choresServices from '../services/choresServices';
+
 const ChoresController = {
-  create: function (req, res) {
-    res.send('Chors create is not implemented yet');
+  create: (req, res) => {
+    choresServices.create(req.body, req.user.emails[0].value)
+    .then(status => res.send(status))
+    .catch(err => res.status(500).send(err));
   },
 
-  read: function (req, res) {
-    res.send('Chors read is not implemented yet');
+  read: (req, res) => {
+    res.send('Chores read is not implemented yet');
   },
 
-  readAll: function (req, res) {
-    res.send('Chors read all is not implemented yet');
+  readAll: (req, res) => {
+    res.send('Chores read all is not implemented yet');
   },
 
-  update: function (req, res) {
-    res.send('Chors update is not implemented yet');
+  update: (req, res) => {
+    choresServices.update(req.body, req.user.emails[0].value)
+    .then(status => res.send(status))
+    .catch(err => res.status(500).send(err));
   },
 
-  destroy: function (req, res) {
-    res.send('Chors destroy is not implemented yet');
-  }
+  destroy: (req, res) => {
+    choresServices.destroy(req.body, req.user.emails[0].value)
+    .then(status => res.send(status))
+    .catch(err => res.status(500).send(err));
+  },
+
+  getChoresForDateRange: (req, res) => {
+    choresServices.getChoresForDateRange(req, req.user.emails[0].value)
+    .then(status => res.send(status))
+    .catch(err => res.status(500).send(err));
+  },
+
 };
 
 export default ChoresController;

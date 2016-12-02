@@ -1,8 +1,17 @@
-const Sequelize = require('sequelize');
-const db = require('../connection');
+import Sequelize from 'sequelize';
+import { connectDb } from '../connection';
+
+const db = connectDb();
 
 const Schedule = db.define('schedule', {
-  lastStart: Sequelize.INTEGER,
+  sunday: Sequelize.STRING,
+  monday: Sequelize.STRING,
+  tuesday: Sequelize.STRING,
+  wednesday: Sequelize.STRING,
+  thursday: Sequelize.STRING,
+  friday: Sequelize.STRING,
+  saturday: Sequelize.STRING,
+  dateOfLastCheckin: Sequelize.STRING,
 });
 
-module.exports = Schedule;
+export default Schedule;

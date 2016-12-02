@@ -1,0 +1,10 @@
+{
+  "name": "My-Nanny",
+  "version": "0.1.0",
+  "description": "Documentation for the My-Nanny API",
+  "title": "My-Nanny",
+  "footer": {
+    "title": "Additional Resources",
+    "filename": "footer.md"
+  }
+}

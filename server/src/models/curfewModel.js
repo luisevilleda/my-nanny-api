@@ -1,8 +1,10 @@
-const Sequelize = require('sequelize');
-const db = require('../connection');
+import Sequelize from 'sequelize';
+import { connectDb } from '../connection';
+
+const db = connectDb();
 
 const Curfew = db.define('curfew', {
-  utcTime: Sequelize.INTEGER,
+  utc: Sequelize.STRING,
 });
 
-module.exports = Curfew;
+export default Curfew;
