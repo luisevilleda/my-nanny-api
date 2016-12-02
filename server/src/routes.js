@@ -10,6 +10,11 @@ const routes = (app, passport) => {
   /* /////// DOCS /////// */
   app.get('/', (req, res) => res.render('index', { title: 'my-nanny docs' }));
 
+  /* /////// Alexa /////// */
+
+  app.get('/api/alexa', auth(), UserController.getAlexaInfo);
+
+
   /* /////// ACCOUNT /////// */
 
   /**

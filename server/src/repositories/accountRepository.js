@@ -1,5 +1,7 @@
 import Account from '../models/accountModel';
 import Child from '../models/childModel';
+import Chore from '../models/choreModel';
+import Schedule from '../models/scheduleModel';
 
 /**
   * @module Repository: Account
@@ -59,7 +61,55 @@ const accountRepository = {
           attributes:
           ['id',
             'name',
+            'photo',
             'phone'],
+        }],
+      })
+      .then((accountInfo) => {
+        if (accountInfo) {
+          resolve(accountInfo);
+        } else {
+          resolve(null);
+        }
+      })
+      .catch(err => reject(err));
+    }),
+
+  readAlexa: email =>
+    new Promise((resolve, reject) => {
+      Account.findOne({
+        where: {
+          email,
+        },
+        attributes:
+        ['id',
+          'username',
+          'email',
+          'timezone',
+          'phone'],
+        include: [{
+          model: Child,
+          attributes:
+          ['id',
+            'name',
+            'photo',
+            'phone'],
+          include: [{
+            model: Chore,
+            attributes:
+            ['id',
+              'title',
+              'details',
+              'date',
+              'childId'],
+          }, {
+            model: Schedule,
+            attributes: {
+              exclude: [
+                'createdAt',
+                'updatedAt'],
+            },
+          }],
         }],
       })
       .then((accountInfo) => {
