@@ -1,3 +1,30 @@
+# Introduction
+
+my-nanny-api contains the backend API for my-nanny. (Express MySQL)
+
+# Setting Up Developing Environment
+
+Because this api authenticates uses AWS Login, the development environment uses https to pass the tokens securely.
+
+```ssh
+Setup and start the MySQL database
+Enable local SSL (link)
+Configure
+sudo npm run start
+```
+
+# Overal Architecture
+
+[Shared text between all 3 modules, this is a picture of the modules, and how they interact (web, api and alexa)]
+
+# API Doc
+
+Describe the API Doc
+
+image of the api doc
+
+Link to api
+
 # FRIEND #
 
 <!-- 

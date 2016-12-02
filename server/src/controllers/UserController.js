@@ -27,6 +27,11 @@ const UserController = {
     .catch(err => res.status(500).send(err));
   },
 
+  getAlexaInfo: (req, res) => {
+    accountServices.readAlexa(req.body, req.user.emails[0].value)
+    .then(data => res.send(data))
+    .catch(err => res.status(500).send(err));
+  },
 
 };
 

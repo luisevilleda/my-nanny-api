@@ -85,10 +85,22 @@ const accountServices = {
       accountRepository.findByEmail(email)
       .then((account) => {
         if (!account) {
-          // If account does not exist, login fails
           reject('Failed to get account info, account does not exist.');
         } else {
           accountRepository.read(email)
+          .then(accountInfo => resolve(JSON.stringify(accountInfo)));
+        }
+      });
+    }),
+
+  readAlexa: (data, email) =>
+    new Promise((resolve, reject) => {
+      accountRepository.findByEmail(email)
+      .then((account) => {
+        if (!account) {
+          reject('Failed to get Alexa info, account does not exist.');
+        } else {
+          accountRepository.readAlexa(email)
           .then(accountInfo => resolve(JSON.stringify(accountInfo)));
         }
       });
